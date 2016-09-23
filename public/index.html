@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/jquery/jquery-ui.css">
+
+  <link rel="stylesheet" href="/css/index.css">
+  <script src="/jquery/jquery-3.1.0.min.js"></script>
+  <script src="/jquery/jquery-ui.js"></script>
+  <script src="/interact.js/interact.js"></script>
+  <script src="/jsPlumb-2.1.7.js"></script>
+  <script src="/angular/angular.js"></script>
+
+  <title>Pump GUI</title>
+</head>
+<body ng-app="app">
+<toolbar></toolbar>
+<button id="create">create</button>
+<button id="check">check</button>
+<div id="main"></div>
+<svg id="k" width="50" height="50">
+  <circle cx="25" cy="15" r="15"/>
+  <polygon points="25,15 5,40 45,40" fill="black"/>
+</svg>
+<svg id="mo" width="30" height="30">
+  <rect width="30" height="30" stroke="black">
+</svg>
+<svg id="ab" width="30" height="30">
+  <rect width="30" height="30" stroke="black">
+</svg>
+<svg id="ex" width="30" height="30">
+  <rect width="30" height="30" stroke="black">
+</svg>
+</body>
+<script src="/js/main.js"></script>
+<script src="/js/toolbar/toolbar.js"></script>
+
+</html>
