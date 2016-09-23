@@ -9,27 +9,33 @@
   <script src="/interact.js/interact.js"></script>
   <script src="/jsPlumb-2.1.7.js"></script>
   <script src="/angular/angular.js"></script>
+  <script src="/svg-js/svg.js"></script>
+
+  <!-- <script src="/svg-js/svg.parser.js"></script> -->
+  <!-- <script src="/svg-js/svg.import.min.js"></script> -->
 
   <title>Pump GUI</title>
 </head>
 <body ng-app="app">
+<!-- <canvas ig="canvas"></canvas> -->
 <toolbar></toolbar>
-<button id="create">create</button>
-<button id="check">check</button>
+
 <div id="main"></div>
-<svg id="k" width="50" height="50">
-  <circle cx="25" cy="15" r="15"/>
-  <polygon points="25,15 5,40 45,40" fill="black"/>
+
+
+<svg id="pumpSVG" display="none" width="20px" height="25px" viewBox="0 0 20 25" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <path d="M 10 5 L 20 25 L 0 25 L 10 5 Z" bx:shape="triangle 0 5 20 20 0.5 0 1@93263a48"/>
+  <ellipse cx="10" cy="10" rx="10" ry="10"/>
 </svg>
-<svg id="mo" width="30" height="30">
-  <rect width="30" height="30" stroke="black">
+
+<svg id="vesselSVG" display="none" width="60px" height="100px" viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style id="bx-google-fonts">@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,500,700,900,100italic,300italic,400,400italic,500italic,700italic,900italic);</style>
+  </defs>
+  <rect width="60" height="100"/>
+  <text x="189.334" y="241.415" transform="matrix(0.482073, 0, 0, 0.441548, -87.669983, -53.212059)" style="fill: rgb(255, 255, 255); font-size: 36px; white-space: pre;">Vessel</text>
 </svg>
-<svg id="ab" width="30" height="30">
-  <rect width="30" height="30" stroke="black">
-</svg>
-<svg id="ex" width="30" height="30">
-  <rect width="30" height="30" stroke="black">
-</svg>
+
 </body>
 <script src="/js/main.js"></script>
 <script src="/js/toolbar/toolbar.js"></script>

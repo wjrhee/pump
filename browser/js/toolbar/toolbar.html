@@ -1,12 +1,44 @@
-<select>
-  <option ng-repeat="obj in objects"></option>
+
+<select ng-model="type" ng-options="item for item in items">
 </select>
-<!-- <form>
-  <div ng-repeat="field in fields">
-    <label></label>
-    <input ng-model="" type="" name="">
+  <label for="sf">Safety Factor</label>
+  <input type="text" ng-model="sf" name="sf">
 
-  </div>
+<div id="vessel-form" ng-show="type =='Vessel'">
+  <form>
+    <label for="min_P">Minimum Pressure (kg/cm^2g)</label>
+    <input type="text" ng-model="vessel.min_P" name="min_P">
+    <label for="max_P">Maximum Pressure (kg/cm^2g)</label>
+    <input type="text" ng-model="vessel.max_P" name="max_P">
+    <label for="op_P">Operating Pressure (kg/cm^2g)</label>
+    <input type="text" ng-model="vessel.op_P" name="op_P">
+    <label for="min_T">Minimum Temperature (deg C)</label>
+    <input type="text" ng-model="vessel.min_T" name="min_T">
+    <label for="max_T">Maximum Temperature (deg C)</label>
+    <input type="text" ng-model="vessel.max_T" name="max_T">
+    <label for="op_T">Operating Temperature (deg C)</label>
+    <input type="text" ng-model="vessel.op_T" name="op_T">
+    <label for="min_L">Minimum Level (m)</label>
+    <input type="text" ng-model="vessel.min_L" name="min_L">
+    <label for="max_L">Maximum Level (m)</label>
+    <input type="text" ng-model="vessel.max_L" name="max_L">
+    <label for="op_L">Operating Level (m)</label>
+    <input type="text" ng-model="vessel.op_L" name="op_L">
+    <label for="sg">Specific Gravity</label>
+    <input type="text" ng-model="vessel.sg" name="sg">
+    <label for="composition">Composition</label>
+    <input type="text" ng-model="vessel.composition" name="composition">
+  </form>
 
-</form> -->
-<button id="create">create</button>
+</div>
+
+<div id="pump-form" ng-show="type =='Pump'">
+  <form>
+    <label for="flow">Flow</label>
+    <input type="text" ng-model="pump.flow" name="flow">
+
+  </form>
+
+</div>
+
+<button id="create" ng-click="create(type)">create</button>

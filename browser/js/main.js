@@ -59,10 +59,7 @@ var colorChild = function(svgElem, color){
   })
 }
 
-$('svg').draggable({
-  snap: true,
-  snapMode: 'outer',
-  stop: function(event, ui) {
+var colorSnapped = function() {
 
     var allDraggables = $('svg');
     for(var x = 0; x < allDraggables.length; x++){
@@ -91,6 +88,11 @@ $('svg').draggable({
     }
 
   }
+
+$('svg').draggable({
+  snap: true,
+  snapMode: 'outer',
+  stop: colorSnapped
 });
 
 
