@@ -8,14 +8,16 @@ jsPlumb.bind("ready", function(){
 
 class System{
   constructor(){
-    this.vessels = [];
-    this.pumps = [];
+    // this.vessels = [];
+    // this.pumps = [];
+    this.equipment = [];
     this.pipes = [];
   }
 }
 
 class Vessel{
   constructor(data){
+    this.name = data.name;
     this.P = {
       min: data.min_P,
       max: data.max_P,
@@ -52,7 +54,8 @@ class Pipe{
 }
 
 class Pump{
-  constructor(flow){
+  constructor(flow, name){
+    this.name = name;
     this.connections = [];
     this.tdh = null;
     this.suction_P = null;

@@ -6,6 +6,8 @@
 
 <div id="vessel-form" ng-show="type =='Vessel'">
   <form>
+    <label for="name">Name</label>
+    <input type="text" ng-model="vessel.name" name="name">
     <label for="min_P">Minimum Pressure (kg/cm^2g)</label>
     <input type="text" ng-model="vessel.min_P" name="min_P">
     <label for="max_P">Maximum Pressure (kg/cm^2g)</label>
@@ -34,6 +36,8 @@
 
 <div id="pump-form" ng-show="type =='Pump'">
   <form>
+    <label for="name">Name</label>
+    <input type="text" ng-model="pump.name" name="name">
     <label for="flow">Flow</label>
     <input type="text" ng-model="pump.flow" name="flow">
 
@@ -42,3 +46,11 @@
 </div>
 
 <button id="create" ng-click="create(type)">create</button>
+<div>
+Connections
+<label for="source">Source</label>
+<select ng-model="source" ng-options="eq.name for eq in equipment"></select>
+<label for="destination">Destination</label>
+<select ng-model="destination" ng-options="eq.name for eq in equipment"></select>
+<button id="connet" ng-click="connect()">connect</button>
+</div>

@@ -17,7 +17,7 @@ app.directive('toolbar', function($rootScope){
         item.removeAttr('display');
         item.appendTo('#main');
       }
-
+      scope.equipment = [];
 
 // take type of equipment to be created as string and create svg element and new instance of equipment
       scope.create = function(t){
@@ -27,13 +27,20 @@ app.directive('toolbar', function($rootScope){
           case 'Vessel':
             cloneAndDisplay('#vesselSVG');
             var vessel = new Vessel(scope.vessel);
-            system.vessels.push(vessel);
+            system.equipment.push(vessel);
+            scope.equipment.push(vessel);
+
             if (scope.sf) system.sf = scope.sf;
-            console.log(system);
 
             break;
           case 'Pump':
             cloneAndDisplay('#pumpSVG');
+            var pump = new Pump(scope.pump.flow, scope.pump.name);
+scope.equipment.push(pump);
+            system.equipment.push(pump);
+            if(scope.sf) system.sf = scope.sf;
+            // scope.$digest();
+
             break;
             // create case for fittings
 
