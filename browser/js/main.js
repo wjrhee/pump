@@ -2,27 +2,39 @@ window.app = angular.module('app', []);
 var connectColor = 'green';
 var disconnectColor = 'black';
 
+jsPlumb.bind("ready", function(){
+
+})
+
+class System{
+  constructor(){
+    this.vessels = [];
+    this.pumps = [];
+    this.pipes = [];
+  }
+}
+
 class Vessel{
-  constructor(id, svg, min_P = null, max_P = null, op_P = null, min_T = null, max_T = null, op_T = null, min_L = null, max_L = null, op_L = null, sg = null, composition = null){
+  constructor(data){
     this.P = {
-      min: min_P,
-      max: max_P,
-      op: op_P
+      min: data.min_P,
+      max: data.max_P,
+      op: data.op_P
     }
     this.T = {
-      min: min_T,
-      max: max_T,
-      op: op_T
+      min: data.min_T,
+      max: data.max_T,
+      op: data.op_T
     }
     this.L = {
-      min: min_L,
-      max: max_L,
-      op: op_L
+      min: data.min_L,
+      max: data.max_L,
+      op: data.op_L
     }
-    this.sg = sg;
-    this.composition = composition;
-    this.svg = svg;
-    this.id = id;
+    this.sg = data.sg;
+    this.composition = data.composition;
+    this.svg = data.svg;
+    this.id = data.id;
     this.connections = [];
   }
 }
@@ -51,6 +63,7 @@ class Pump{
   }
 }
 
+var system = new System();
 
 
 var colorChild = function(svgElem, color){
@@ -63,13 +76,13 @@ var colorSnapped = function() {
 
     var allDraggables = $('svg');
     for(var x = 0; x < allDraggables.length; x++){
-      // console.log($(allDraggables[x]).draggable().data('uiDraggable').snapElements);
+
       if(!$(allDraggables[x]).draggable().data('uiDraggable').snapElements){
         $(allDraggables[x]).draggable().data('uiDraggable').snapElements = [];
 
         colorChild(allDraggables[x], disconnectColor);
       }
-        // console.log($(allDraggables[x]).draggable().data('uiDraggable').snapElements);
+
         Array.from($(allDraggables[x]).draggable().data('uiDraggable').snapElements).forEach(function(item){
           if(item.snapping){
             console.log(item);
@@ -89,33 +102,4 @@ var colorSnapped = function() {
 
   }
 
-$('svg').draggable({
-  snap: true,
-  snapMode: 'outer',
-  stop: colorSnapped
-});
-
-
-var createSVG = function(){
-  var svg = document.createElement('svg');
-  $(svg).draggable();
-  return svg;
-
-}
-
-var createPump = function(){
-  var svg = createSVG();
-  $('<rect height="30" width="30">').appendTo(svg);
-  console.log(svg);
-  $(svg).appendTo('#main');
-}
-
-$('#create').on('click', function(){
-  // createPump();
-  $('#main').append('<svg width="30" height="30"><rect width="30" height="30" stroke="black"></svg>')
-  $('svg').draggable({
-    snap: true,
-    snapMode: 'outer'
-  });
-})
 
