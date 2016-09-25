@@ -1,6 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-const db = require('../../db');
+const db = require('../models');
 const Pipe = db.model('pipe');
 // const Invoice_item = db.model('invoice_item');
 // const Invoice = db.model('invoice');
@@ -12,3 +12,4 @@ router.get('/', (req, res, next) => {
     })
     .catch(next);
 })
+module.exports = router;

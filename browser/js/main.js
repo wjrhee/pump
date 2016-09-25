@@ -156,18 +156,63 @@ pipeTable = {
 }
 console.log(pipeTable);
 
+class Equipment{
+  constructor(){
+    this.connectionTo = {};
+    this.connectionFrom = {};
+    this.connectionToPipe = {};
+    this.connectionFromPipe = {};
 
+  }
+}
+
+class Profile{
+  constructor(){
+    this.name = null;
+    this.hs = 0;
+    this.hf = 0;
+    this.hp = 0;
+    this.hfPipe = 0;
+    this.hfFittings = 0;
+    this.LD = 0;
+    this.ed = 0;
+    this.Re = 0;
+    this.friction = 0;
+    this.hv = 0;
+    this.velocity = 0;
+  }
+
+
+}
 
 class System{
   constructor(){
     this.equipment = {};
     this.pipes = [];
     this.head = null;
+    this.suction = [];
+    this.discharge = [];
+    // this.hss = 0;
+    // this.hps = 0;
+    // this.hfs = 0;
+    // this.hfsPipe = 0;
+    // this.hfsFittings = 0;
+    // this.hsd = 0;
+    // this.hpd = 0;
+    // this.hfd = 0;
+    // this.hfdPipe = 0;
+    // this.hfdFittings = 0;
+    this.sf = 1;
+    this.pump = null;
+
   }
 }
 
-class Vessel{
+class Vessel extends Equipment{
+
   constructor(data){
+    super();
+    this.connected = false;
     this.type = 'vessel';
     this.name = data.name;
     this.P = {
@@ -187,9 +232,8 @@ class Vessel{
     }
     this.sg = data.sg;
     this.composition = data.composition;
-    this.svg = data.svg;
-    this.id = data.id;
-    this.connections = [];
+    // this.svg = data.svg;
+    // this.id = data.id;
   }
 }
 
@@ -197,27 +241,32 @@ class Pipe{
   constructor(name){
     this.name = name;
     this.type = "pipe";
+    this.roughness = 0.00009144;
+
     this.fittings = {};
     this.length = 0;
     this.matl = '316';
-    this.nom_size = null;
+    this.nps = null;
     this.sch = null;
     this.start = null;
     this.end = null;
   }
 }
 
-class Pump{
-  constructor(flow, name){
+class Pump extends Equipment{
+  constructor(flow, name, viscosity=0.00089){
+    super();
+    this.viscosity = viscosity;
+    this.connected = false;
+    this.elevation = 1;
     this.type = 'pump';
     this.name = name;
-    this.connections = [];
+    // this.connections = [];
     this.tdh = null;
     this.suction_P = null;
     this.discharge_P = null;
     this.npsha = null;
     this.flow = flow;
-    this.connections = [];
   }
 }
 
@@ -254,10 +303,14 @@ var colorSnapped = function() {
             colorChild(allDraggables[x], disconnectColor);
 
           }
-        })
-
-    }
+      })
 
   }
+
+}
+
+
+
+
 
 

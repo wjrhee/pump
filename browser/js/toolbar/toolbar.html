@@ -18,14 +18,17 @@
         <label for="matl">Material</label>
         <input type="text" ng-model="source.matl" name="matl">
 
-        <label for="length">Length</label>
+        <label for="length">Length (m)</label>
         <input type="text" ng-model="source.length" name="length">
 
-        <label for="nom_size">Nominal Size</label>
-        <input type="text" ng-model="source.nom_size" name="nom_size">
+        <label for="nps">Nominal Size (mm)</label>
+        <input type="text" ng-model="source.nps" name="nps">
 
         <label for="sch">Schedule</label>
         <input type="text" ng-model="source.sch" name="sch">
+
+        <label for="sch">Rouchness (m)</label>
+        <input type="text" ng-model="source.roughness" name="sch">
 
         <label for="start">Start</label>
         <p type="text" name="start">{{source.start}}</p>
@@ -43,13 +46,13 @@
         <p name="name">{{source.name}}</p>
         <!-- <input type="text" ng-model="source.name" name="name"> -->
 
-        <label for="min_P">Minimum Pressure (kg/cm^2g)</label>
+        <label for="min_P">Minimum Pressure (kPa(a))</label>
         <input type="text" ng-model="source.P.min" name="min_P">
 
-        <label for="max_P">Maximum Pressure (kg/cm^2g)</label>
+        <label for="max_P">Maximum Pressure (kPa(a))</label>
         <input type="text" ng-model="source.P.max" name="max_P">
 
-        <label for="op_P">Operating Pressure (kg/cm^2g)</label>
+        <label for="op_P">Operating Pressure (kPa(a))</label>
         <input type="text" ng-model="source.P.op" name="op_P">
 
         <label for="min_T">Minimum Temperature (deg C)</label>
@@ -83,8 +86,12 @@
         <label for="name">Name</label>
         <p name="name">{{source.name}}</p>
         <input type="text" ng-model="source.name" name="name">
-        <label for="flow">Flow</label>
+        <label for="flow">Flow (cu.m / hr)</label>
         <input type="text" ng-model="source.flow" name="flow">
+        <label for="viscosity">Viscosity (Pa-s)</label>
+        <input type="text" ng-model="source.viscosity" name="viscosity">
+        <label for="elevation">Elevation (m)</label>
+        <input type="text" ng-model="source.elevation" name="elevation">
         <button ng-click="editpump()">edit</button>
       </form>
     </div>
@@ -98,11 +105,11 @@
       <form>
         <label for="name">Name</label>
         <input type="text" ng-model="vessel.name" name="name">
-        <label for="min_P">Minimum Pressure (kg/cm^2g)</label>
+        <label for="min_P">Minimum Pressure (kPa(a))</label>
         <input type="text" ng-model="vessel.min_P" name="min_P">
-        <label for="max_P">Maximum Pressure (kg/cm^2g)</label>
+        <label for="max_P">Maximum Pressure (kPa(a))</label>
         <input type="text" ng-model="vessel.max_P" name="max_P">
-        <label for="op_P">Operating Pressure (kg/cm^2g)</label>
+        <label for="op_P">Operating Pressure (kPa(a))</label>
         <input type="text" ng-model="vessel.op_P" name="op_P">
         <label for="min_T">Minimum Temperature (deg C)</label>
         <input type="text" ng-model="vessel.min_T" name="min_T">
@@ -135,6 +142,8 @@
     </div>
 <button id="create" ng-click="create(type)">create</button>
 </div>
+
+<button ng-click="calculate()">calculate</button>
 
 
 <div id="answer">
