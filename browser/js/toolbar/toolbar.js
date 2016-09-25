@@ -66,7 +66,6 @@ app.directive('toolbar', function($rootScope){
         connections.forEach(conn => {
             var src = system.equipment[conn.source.id];
             src.connections.push(conn.target.id);
-
         })
       }
 

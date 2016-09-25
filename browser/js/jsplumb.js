@@ -127,19 +127,4 @@ function addEq(id, tag) {
 //             console.log("connection " + connection.id + " was dragged");
 //         });
 
-jsPlumb.bind('connectionDragStop', function(conn){
-    if(conn.source && conn.target){
-        var src = system.equipment[conn.source.id];
-        // console.log(src);
-        src.connections.push(conn.target.id);
 
-        // initialize new pipe and store it into the system
-
-        var pipeName = 'pipe-' + conn.source.id + '-' + conn.source.target;
-        var newPipe = new Pipe(pipeName);
-        system.equipment[pipeName] = newPipe;
-
-
-
-    }
-})
