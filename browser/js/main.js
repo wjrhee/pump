@@ -2,21 +2,17 @@ window.app = angular.module('app', []);
 var connectColor = 'green';
 var disconnectColor = 'black';
 
-jsPlumb.bind("ready", function(){
-
-})
 
 class System{
   constructor(){
-    // this.vessels = [];
-    // this.pumps = [];
-    this.equipment = [];
+    this.equipment = {};
     this.pipes = [];
   }
 }
 
 class Vessel{
   constructor(data){
+    this.type = 'vessel';
     this.name = data.name;
     this.P = {
       min: data.min_P,
@@ -42,12 +38,14 @@ class Vessel{
 }
 
 class Pipe{
-  constructor(length, matl='316', nom_size, sch, flow, velocity){
+  constructor(name){
+    this.name = name;
+    this.type = "pipe";
     this.fittings = {};
-    this.length = length;
-    this.matl = matl;
-    this.nom_size = nom_size;
-    this.sch = sch;
+    this.length = 0;
+    this.matl = '316';
+    this.nom_size = null;
+    this.sch = null;
     this.start = null;
     this.end = null;
   }
@@ -55,6 +53,7 @@ class Pipe{
 
 class Pump{
   constructor(flow, name){
+    this.type = 'pump';
     this.name = name;
     this.connections = [];
     this.tdh = null;

@@ -17,18 +17,21 @@
   <title>Pump GUI</title>
 </head>
 <body ng-app="app">
-<!-- <canvas ig="canvas"></canvas> -->
+
 <toolbar></toolbar>
 
-<div id="main"></div>
+<div id="canvas" class="jtk-demo-main canvas-window">
+
+</div>
 
 
-<svg id="pumpSVG" display="none" width="20px" height="25px" viewBox="0 0 20 25" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+
+<svg id="pumpSVG" class="window jtk-node" display="none" width="20px" height="25px" viewBox="0 0 20 25" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
   <path d="M 10 5 L 20 25 L 0 25 L 10 5 Z" bx:shape="triangle 0 5 20 20 0.5 0 1@93263a48"/>
   <ellipse cx="10" cy="10" rx="10" ry="10"/>
 </svg>
 
-<svg id="vesselSVG" display="none" width="60px" height="100px" viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg">
+<svg id="vesselSVG" class="window jtk-node" display="none" width="60px" height="100px" viewBox="0 0 60 100" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style id="bx-google-fonts">@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,500,700,900,100italic,300italic,400,400italic,500italic,700italic,900italic);</style>
   </defs>
@@ -37,6 +40,7 @@
 </svg>
 
 </body>
+<script src="/js/jsplumb.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/toolbar/toolbar.js"></script>
 
