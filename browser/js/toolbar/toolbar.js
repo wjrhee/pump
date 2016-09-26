@@ -13,7 +13,6 @@ app.directive('toolbar', function($rootScope){
 
     scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
     scope.nps = Object.keys(pipeTable);
-    // scope.nps = ['6', '8', '10', '15', '20', '25', '32', '40', '50', '65', '80', '90', '100', '125', '150'];
 
 
     jsPlumb.bind('connectionDragStop', function(conn){
@@ -22,10 +21,6 @@ app.directive('toolbar', function($rootScope){
         if(system.equipment[conn.source.id] && system.equipment[conn.target.id]){
             var src = system.equipment[conn.source.id];
             var tgt = system.equipment[conn.target.id];
-            // console.log(src);
-
-
-            // src.connections.push(conn.target.id);
 
             // initialize new pipe and store it into the system
 
@@ -36,8 +31,7 @@ app.directive('toolbar', function($rootScope){
             system.equipment[pipeName] = newPipe;
             scope.equipment.push(newPipe);
 
-            // system.equipment[conn.source.id].connected = true;
-            // system.equipment[conn.target.id].connected = true;
+
             src.connectionTo[conn.target.id] = conn.target;
             src.connectionToPipe[pipeName] = newPipe;
 
@@ -119,19 +113,13 @@ app.directive('toolbar', function($rootScope){
 
         _profile.hfPipe = _profile.friction * _profile.hv * _profile.LD;
 
-
-
     }
 
-      // for testing
-      // var testPipe = new Pipe();
-      // testPipe.nps = '40';
+
 
 
     scope.calculate = function(){
-        // console.log(pipeTable['6']);
-    // console.log(pipeTable[6][10]);
-        // var size = Object.keys(myObj).length;
+
         system.temp = scope.temp;
         system.atmosP = scope.atmosP;
         var eqLength = Object.keys(system.equipment).length;
@@ -198,11 +186,10 @@ app.directive('toolbar', function($rootScope){
                         // operating pressure * gravity accel
                         setHs(dischargeSide, dest);
                         setHp(dischargeSide, dest);
-                        // suctionSide.hp = dest.P.op / (dest.sg * 9.8);
-                        // suctionSide.hs = dest.L.op - system.pump.elevation;
+
 
                         var pipes = dest.connectionFromPipe;
-                        // console.log(pipes);
+
                         // iterate through pipes, but for sake of testing,  use the first key
                         var pipeKeys = Object.keys(pipes);
                         var pipe = pipes[pipeKeys[0]];
@@ -220,24 +207,25 @@ app.directive('toolbar', function($rootScope){
             // iterate over all of suction side profiles and discharge side profiles, find max and calculate tdh
             // for testing purposes, hardcode suction and discharge side to the first entry
             if(system.discharge.length > 0 && system.suction.length > 0)
-                system.pump.tdh = system.discharge[0] - system.suction[0];
+                system.pump.tdh = system.discharge[0].h - system.suction[0].h;
 
             else console.log('tdh error', system.discharge, system.suction);
             console.log(pump);
 
-            // B36 = atmospheric pressure
-            // G9 = vessel pressure
-            // B38 = temp deg C
-            // IF( (10^( 8.07131-1730.63/( B38+233.426))*0.00135951)>(G9+B36),
-            // (G9+B36),
-            // (10^(8.07131-1730.63/(B38+233.426))*0.00135951))
 
-            // =IF(EXP((14.413*C51-1466.55)/(C51+379.38))>C51,
-            // E12,
-            // EXP((14.413*C51-1466.55)/(C51+379.38)))
-            // temp = system.temp;
-            // 0.133 conversion from mmHg -> kPa
-            var vaporP = Math.pow(10, (8.07131 - (1730.63 / (system.temp + 233.426)))) * 0.133;
+            var a = +system.temp + 233.426;
+            console.log('a', a);
+            var b = 1730 / a;
+            console.log('b', b);
+            var c = 8.06131 - b;
+            console.log('c', c);
+
+
+            var rawVapP = Math.pow(10, c);
+
+            console.log(rawVapP);
+            var vaporP = rawVapP * 0.133;
+
             console.log('vaporP',vaporP);
             console.log('system temp', system.temp);
             if (vaporP > (system.atmosP + system.head.P.op))
@@ -252,17 +240,23 @@ app.directive('toolbar', function($rootScope){
 
             system.pump.npsha = (system.head.L.op - system.pump.elevation) + system.suction[0].hp - ((vaporP - system.atmosP) * 0.10197 / system.head.sg) - system.suction[0].hf - system.suction[0].extraLoss;
 
+
             console.log(system.pump.npsha);
 
-            // =(G10-B33)+G4-(B37-B36)*2.31/B31-G6-G5
 
+            //set data onto scope
+            scope.npsha = system.pump.npsha;
+            scope.dischargeP = system.discharge[0].h;
+            scope.suctionP = system.suction[0].h;
+            scope.dischargeV = system.discharge[0].velocity;
+            scope.suctionV = system.suction[0].velocity;
+            scope.tdh = system.pump.tdh;
+            scope.dischargeRe = system.discharge[0].Re;
+            scope.suctionRe = system.suction[0].Re;
 
 
 
             // calculate NPSHa
-
-
-
 
         }
     }
@@ -275,24 +269,6 @@ app.directive('toolbar', function($rootScope){
         })
       }
 
-      scope.editpipe = function(name){
-        // console.log(system.equipment[name])
-        // var pipe = system.equipment[scope.source.name];
-
-        console.log(scope.source);
-        console.log(system.equipment[scope.source.name])
-        // console.log(name);
-
-      }
-
-      scope.editvessel = function(){
-        console.log(source);
-
-      }
-      scope.editpump = function(){
-        console.log(source);
-
-      }
 
     }
   }

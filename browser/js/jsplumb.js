@@ -1,8 +1,6 @@
 jsPlumb.ready(function() {
-// Temporary variable for identifying new projects/tasks
     var i = 0;
 
-    // Style and properties of container/connections/endpoints
     jsPlumb.Defaults.Container = $("#container");
     jsPlumb.Defaults.PaintStyle = { strokeStyle:"#000000", lineWidth:2};
     jsPlumb.Defaults.EndpointStyle = { radius:3, fillStyle:"#FF0000" };
@@ -19,53 +17,17 @@ jsPlumb.ready(function() {
         ]
     });
 
-  // $('#removetask1').click(function(e) {
-  //     jsPlumb.detachAllConnections($('#task1'));
-  //     var p  = $("#task1").parent();
-  //     $('#task1').remove();
-  //     jsPlumb.recalculateOffsets(p);
-  //     jsPlumb.repaintEverything();
-  // })
-
-  // // Deletes everything inside the container
-  // $('#deleteall').click(function(e) {
-  //   $('#container').text("");
-  //   i=1;
-  // });
 
   // // Deletes all jsplumb connections
-  // $('#deleteallcons').click(function(e) {
+
   //   jsPlumb.detachEveryConnection();
-  // });
 
-  // Repaints all jsplumb connections
-    $('#repaintall').click(function(e) {
-    jsPlumb.repaintEverything();
-    });
-
-    // Adds a project to the container
-    $('#create').click(function(e) {
-    addEq("eq" + i);
-    i++;
-    });
-
-  // Displays individually the current connections information
-    $('#getconnectionids').click(function(e) {
-        $.each(jsPlumb.getConnections(), function (idx, connection) {
-            alert(connection.id + " : " + connection.sourceId + " : " + connection.targetId);
-        });
-    });
-
-  // // Clicking on the project adds a task to that project
-  // $("#container").on('click','.project',function(e) {
-  //   addTask($(this), 'task' + i);
-  //   i++;
-  // });
-
-  // For this example, predefined sample projects are added
+  // // Repaints all jsplumb connections
+  //   $('#repaintall').click(function(e) {
+  //   jsPlumb.repaintEverything();
+  //   });
 
 
-  // jsPlumb.connect({source:"task2", target:"task0"});
 });
 
 var _addEndpoints = function (toId, sourceAnchors, targetAnchors) {
@@ -122,9 +84,3 @@ function addEq(id, tag) {
     });
 
 }
-
-// instance.bind("connectionDragStop", function (connection) {
-//             console.log("connection " + connection.id + " was dragged");
-//         });
-
-
