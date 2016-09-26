@@ -22,10 +22,12 @@
         <input type="text" ng-model="source.length" name="length">
 
         <label for="nps">Nominal Size (mm)</label>
-        <input type="text" ng-model="source.nps" name="nps">
+        <select ng-model="source.nps" ng-options="n for n in nps"></select>
+        <!-- <input type="text" ng-model="source.nps" name="nps"> -->
 
         <label for="sch">Schedule</label>
-        <input type="text" ng-model="source.sch" name="sch">
+        <select ng-model="source.sch" ng-options="s for s in sch"></select>
+        <!-- <input type="text" ng-model="source.sch" name="sch"> -->
 
         <label for="sch">Rouchness (m)</label>
         <input type="text" ng-model="source.roughness" name="sch">
@@ -134,7 +136,7 @@
       <form>
         <label for="name">Name</label>
         <input type="text" ng-model="pump.name" name="name">
-        <label for="flow">Flow</label>
+        <label for="flow">Flow (cu.m / hr)</label>
         <input type="text" ng-model="pump.flow" name="flow">
 
       </form>
