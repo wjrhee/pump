@@ -5,10 +5,17 @@
     System
       <label for="sf">Safety Factor</label>
       <input type="text" ng-model="sf" name="sf">
+
+      <label for="atmosP">Atmospheric Pressure (kPa(a))</label>
+      <input type="text" ng-model="atmosP" name="atmosP">
+
+      <label for="temp">System Temperature (deg C)</label>
+      <input type="text" ng-model="temp" name="temp">
 </div>
 
 <div ng-show="mode == 'edit'">
-    <select ng-model="source" ng-options="eq.name for eq in equipment"></select>
+    <label for="eq">Equipment to Edit</label>
+    <select name="eq" ng-model="source" ng-options="eq.name for eq in equipment"></select>
 
     <div ng-show="source.type == 'pipe'">
         <label for="name">Name</label>
@@ -29,8 +36,11 @@
         <select ng-model="source.sch" ng-options="s for s in sch"></select>
         <!-- <input type="text" ng-model="source.sch" name="sch"> -->
 
-        <label for="sch">Rouchness (m)</label>
-        <input type="text" ng-model="source.roughness" name="sch">
+        <label for="roughness">Roughness (m)</label>
+        <input type="text" ng-model="source.roughness" name="roughness">
+
+        <label for="flow">Flow (cu.m / hr)</label>
+        <input type="text" ng-model="source.flow" name="flow">
 
         <label for="start">Start</label>
         <p type="text" name="start">{{source.start}}</p>
@@ -56,15 +66,6 @@
 
         <label for="op_P">Operating Pressure (kPa(a))</label>
         <input type="text" ng-model="source.P.op" name="op_P">
-
-        <label for="min_T">Minimum Temperature (deg C)</label>
-        <input type="text" ng-model="source.T.min" name="min_T">
-
-        <label for="max_T">Maximum Temperature (deg C)</label>
-        <input type="text" ng-model="source.T.max" name="max_T">
-
-        <label for="op_T">Operating Temperature (deg C)</label>
-        <input type="text" ng-model="source.T.op" name="op_T">
 
         <label for="min_L">Minimum Level (m)</label>
         <input type="text" ng-model="source.L.min" name="min_L">
@@ -101,7 +102,8 @@
 
 
 <div ng-show="mode == 'create'">
-    <select ng-model="type" ng-options="item for item in items"></select>
+    <label for="eqcreate">Create Equipment</label>
+    <select name="eqcreate" ng-model="type" ng-options="item for item in items"></select>
 
     <div id="vessel-form" ng-show="type =='Vessel'">
       <form>
@@ -113,12 +115,7 @@
         <input type="text" ng-model="vessel.max_P" name="max_P">
         <label for="op_P">Operating Pressure (kPa(a))</label>
         <input type="text" ng-model="vessel.op_P" name="op_P">
-        <label for="min_T">Minimum Temperature (deg C)</label>
-        <input type="text" ng-model="vessel.min_T" name="min_T">
-        <label for="max_T">Maximum Temperature (deg C)</label>
-        <input type="text" ng-model="vessel.max_T" name="max_T">
-        <label for="op_T">Operating Temperature (deg C)</label>
-        <input type="text" ng-model="vessel.op_T" name="op_T">
+
         <label for="min_L">Minimum Level (m)</label>
         <input type="text" ng-model="vessel.min_L" name="min_L">
         <label for="max_L">Maximum Level (m)</label>
@@ -142,7 +139,9 @@
       </form>
 
     </div>
-<button id="create" ng-click="create(type)">create</button>
+    <div>
+        <button id="create" ng-click="create(type)">create</button>
+    </div>
 </div>
 
 <button ng-click="calculate()">calculate</button>

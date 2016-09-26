@@ -88,6 +88,40 @@ app.directive('toolbar', function($rootScope){
         }
       }
 
+    var setHp = function(_profile, _vessel){
+        _profile.hp = _vessel.P.op / (_vessel.sg * 9.8);
+        return _profile.hp;
+
+    }
+    var setHs = function(_profile, _vessel){
+        _profile.hs = _vessel.L.op - system.pump.elevation;
+        return _profile.hs;
+    }
+    var setInnerDia = function(_pipe){
+        _pipe.innerDia = pipeTable[_pipe.nps][_pipe.sch] / 1000;
+
+        return _pipe.innerDia;
+
+    }
+
+    var setHfPipe = function(_profile, _pipe, _vessel){
+        _profile.velocity = _pipe.flow_sf / (Math.pow(_pipe.innerDia,2) * (Math.PI / 4)) / 3600;
+        _profile.hv = Math.pow(_profile.velocity, 2) / (2 * 9.8);
+        _profile.ed = _pipe.roughness / _pipe.innerDia;
+        _profile.Re = _profile.velocity * _pipe.innerDia * _vessel.sg * 1000 / system.pump.viscosity;
+
+        var A = -2 * Math.log10((_profile.ed / 3.7) + (12 / _profile.Re));
+        var B = -2 * Math.log10((_profile.ed / 3.7) + (2.51 * A / _profile.Re));
+        var C = -2 * Math.log10((_profile.ed / 3.7) + (2.51 * B / _profile.Re));
+        _profile.friction = Math.pow(((A - Math.pow((B-A), 2)) / (C - (2 * B) + A)), -2);
+
+        _profile.LD = +_pipe.length / _pipe.innerDia;
+
+        _profile.hfPipe = _profile.friction * _profile.hv * _profile.LD;
+
+
+
+    }
 
       // for testing
       // var testPipe = new Pipe();
@@ -98,20 +132,24 @@ app.directive('toolbar', function($rootScope){
         // console.log(pipeTable['6']);
     // console.log(pipeTable[6][10]);
         // var size = Object.keys(myObj).length;
-        console.log('hello');
+        system.temp = scope.temp;
+        system.atmosP = scope.atmosP;
         var eqLength = Object.keys(system.equipment).length;
         // console.log(eqLength);
+        console.log(system.equipment);
+
+        var connFromLength, connToLength;
 
         if(eqLength > 2){
             for(var key in system.equipment){
 
-                if(system.equipment[key].connectionFrom && system.equipment[key].connectionTo){
-                    var connFromLength = Object.keys(system.equipment[key].connectionFrom).length;
-                    var connToLength = Object.keys(system.equipment[key].connectionTo).length;
+                if(system.equipment[key].type === 'vessel'){
+                    connFromLength = Object.keys(system.equipment[key].connectionFrom).length;
+                    connToLength = Object.keys(system.equipment[key].connectionTo).length;
                 }
                 else{
-                    var connFromLength = 0;
-                    var connToLength = 0;
+                    connFromLength = 0;
+                    connToLength = 0;
                 }
 
                 // console.log(connFromLength);
@@ -120,11 +158,16 @@ app.directive('toolbar', function($rootScope){
                 if(connFromLength === 0 && connToLength > 0){
                     console.log('starting calc');
                     var suctionSide = new Profile();
+                    suctionSide.name = 'suction-side-' + system.equipment[key].name;
 
                     system.head = system.equipment[key];
                     // operating pressure * gravity accel
-                    suctionSide.hps = system.head.P.op / (system.head.sg * 9.8);
-                    suctionSide.hss = system.head.L.op - system.pump.elevation;
+
+                    // suctionSide.hp = system.head.P.op / (system.head.sg * 9.8);
+                    // suctionSide.hs = system.head.L.op - system.pump.elevation;
+
+                    setHp(suctionSide, system.head);
+                    setHs(suctionSide, system.head);
 
                     var pipes = system.head.connectionToPipe;
                     // iterate through pipes, but for sake of testing,  use the first key
@@ -132,44 +175,95 @@ app.directive('toolbar', function($rootScope){
                     var pipe = pipes[pipeKeys[0]];
                     if(typeof pipe.roughness == 'string') pipe.roughness = +pipe.roughness;
 
-                    console.log(pipe);
+                    setInnerDia(pipe);
 
-                    console.log(pipe.nps);
-                    console.log(pipeTable[pipe.nps])
-                    // console.log(pipeTable[pipe.nps])
-                    // console.log(pipeTable[pipe.nps][+pipe.sch])
-                    // console.log(pipeTable[pipe.nps][pipe.sch])
-                    var innerDia = pipeTable[pipe.nps][pipe.sch] / 1000;
-                    console.log(innerDia);
-                    var flow = system.pump.flow * system.sf;
+                    // console.log(innerDia);
+                    pipe.setFlow(system.sf);
+                    // var flow = system.pump.flow * system.sf;
+                    setHfPipe(suctionSide, pipe, system.equipment[key]);
 
-                    suctionSide.velocity = flow / (Math.pow(innerDia,2) * (Math.PI / 4)) / 3600;
-                    console.log(suctionSide.velocity);
-                    suctionSide.hv = Math.pow(suctionSide.velocity, 2) / (2 * 9.8);
-                    suctionSide.ed = pipe.roughness / innerDia;
-                    suctionSide.Re = suctionSide.velocity * innerDia * system.head.sg * 1000000 / system.pump.viscosity;
-
-                    var A = -2 * Math.log10(pipe.roughness / (3.7 * innerDia + (12 / suctionSide.Re)));
-                    var B = -2 * Math.log10(pipe.roughness / (3.7 * innerDia + (2.51 * A / suctionSide.Re)));
-                    var C = -2 * Math.log10(pipe.roughness / (3.7 * innerDia + (2.51 * B / suctionSide.Re)));
-                    suctionSide.friction = Math.pow((A - Math.pow(B-A, 2)) / (C - 2 * B + A), -2);
-                    console.log(suctionSide.friction);
-
-                    suctionSide.LD = +pipe.length / innerDia;
-
-                    suctionSide.hfPipe = suctionSide.friction * suctionSide.hv * suctionSide.LD;
                     suctionSide.hf = suctionSide.hfPipe + suctionSide.hfFittings;
+                    suctionSide.h = suctionSide.hp + suctionSide.hs - suctionSide.hf;
 
-                    console.log(suctionSide);
                     system.suction.push(suctionSide);
-                    console.log('done');
-                    return;
                 }
+                else if(connFromLength > 0 && connToLength === 0)
+
+                    if(system.equipment[key].type === 'vessel'){
+
+                        var dest = system.equipment[key];
+                        var dischargeSide = new Profile();
+                        dischargeSide.name = 'discharge-side-' + dest.name;
+
+                        // operating pressure * gravity accel
+                        setHs(dischargeSide, dest);
+                        setHp(dischargeSide, dest);
+                        // suctionSide.hp = dest.P.op / (dest.sg * 9.8);
+                        // suctionSide.hs = dest.L.op - system.pump.elevation;
+
+                        var pipes = dest.connectionFromPipe;
+                        // console.log(pipes);
+                        // iterate through pipes, but for sake of testing,  use the first key
+                        var pipeKeys = Object.keys(pipes);
+                        var pipe = pipes[pipeKeys[0]];
+
+                        if(typeof pipe.roughness == 'string') pipe.roughness = +pipe.roughness;
+                        setInnerDia(pipe);
+                        pipe.setFlow(system.sf);
+                        setHfPipe(dischargeSide, pipe, dest);
+                        dischargeSide.hf = dischargeSide.hfPipe + dischargeSide.hfFittings;
+                        dischargeSide.h = dischargeSide.hp + dischargeSide.hs + dischargeSide.hf;
+                        system.discharge.push(dischargeSide);
+                        // console.log(dischargeSide);
+                    }
             }
-            if(!head){
-                console.log('system not properly connected');
-                return 0;
-            }
+            // iterate over all of suction side profiles and discharge side profiles, find max and calculate tdh
+            // for testing purposes, hardcode suction and discharge side to the first entry
+            if(system.discharge.length > 0 && system.suction.length > 0)
+                system.pump.tdh = system.discharge[0] - system.suction[0];
+
+            else console.log('tdh error', system.discharge, system.suction);
+            console.log(pump);
+
+            // B36 = atmospheric pressure
+            // G9 = vessel pressure
+            // B38 = temp deg C
+            // IF( (10^( 8.07131-1730.63/( B38+233.426))*0.00135951)>(G9+B36),
+            // (G9+B36),
+            // (10^(8.07131-1730.63/(B38+233.426))*0.00135951))
+
+            // =IF(EXP((14.413*C51-1466.55)/(C51+379.38))>C51,
+            // E12,
+            // EXP((14.413*C51-1466.55)/(C51+379.38)))
+            // temp = system.temp;
+            // 0.133 conversion from mmHg -> kPa
+            var vaporP = Math.pow(10, (8.07131 - (1730.63 / (system.temp + 233.426)))) * 0.133;
+            console.log('vaporP',vaporP);
+            console.log('system temp', system.temp);
+            if (vaporP > (system.atmosP + system.head.P.op))
+                vaporP = (system.head.P.op + system.atmosP);
+            console.log('after comparison',system.head.P.op);
+
+
+            console.log('pressure head',system.suction[0].hp);
+            console.log('atmos p',system.atmosP);
+            console.log('sg', system.head.sg);
+
+
+            system.pump.npsha = (system.head.L.op - system.pump.elevation) + system.suction[0].hp - ((vaporP - system.atmosP) * 0.10197 / system.head.sg) - system.suction[0].hf - system.suction[0].extraLoss;
+
+            console.log(system.pump.npsha);
+
+            // =(G10-B33)+G4-(B37-B36)*2.31/B31-G6-G5
+
+
+
+
+            // calculate NPSHa
+
+
+
+
         }
     }
 

@@ -169,6 +169,7 @@ class Equipment{
 class Profile{
   constructor(){
     this.name = null;
+    this.h = 0;
     this.hs = 0;
     this.hf = 0;
     this.hp = 0;
@@ -180,6 +181,7 @@ class Profile{
     this.friction = 0;
     this.hv = 0;
     this.velocity = 0;
+    this.extraLoss = 0;
   }
 
 
@@ -192,18 +194,11 @@ class System{
     this.head = null;
     this.suction = [];
     this.discharge = [];
-    // this.hss = 0;
-    // this.hps = 0;
-    // this.hfs = 0;
-    // this.hfsPipe = 0;
-    // this.hfsFittings = 0;
-    // this.hsd = 0;
-    // this.hpd = 0;
-    // this.hfd = 0;
-    // this.hfdPipe = 0;
-    // this.hfdFittings = 0;
+    this.atmosP = 101;
+
     this.sf = 1;
     this.pump = null;
+    this.temp = 20;
 
   }
 }
@@ -220,11 +215,11 @@ class Vessel extends Equipment{
       max: data.max_P,
       op: data.op_P
     }
-    this.T = {
-      min: data.min_T,
-      max: data.max_T,
-      op: data.op_T
-    }
+    // this.T = {
+    //   min: data.min_T,
+    //   max: data.max_T,
+    //   op: data.op_T
+    // }
     this.L = {
       min: data.min_L,
       max: data.max_L,
@@ -242,15 +237,22 @@ class Pipe{
     this.name = name;
     this.type = "pipe";
     this.roughness = 0.00009144;
-
+    this.flow = 10;
+    this.flow_sf = 0;
     this.fittings = {};
-    this.length = 0;
+    this.length = 50;
     this.matl = '316';
     this.nps = null;
     this.sch = null;
     this.start = null;
     this.end = null;
+    this.innerDia = null;
   }
+
+  setFlow(sf){
+    this.flow_sf = this.flow * sf;
+  }
+
 }
 
 class Pump extends Equipment{
