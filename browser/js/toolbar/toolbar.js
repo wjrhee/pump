@@ -8,9 +8,7 @@ app.directive('toolbar', function($rootScope){
     scope.items = ['Vessel', 'Pump', 'Fitting'];
     scope.modes = ['edit', 'create'];
     scope.mode = 'create';
-
     scope.equipment = [];
-
     scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
     scope.nps = Object.keys(pipeTable);
 
@@ -28,7 +26,7 @@ app.directive('toolbar', function($rootScope){
             var newPipe = new Pipe(pipeName);
             newPipe.start = conn.source.id;
             newPipe.end = conn.target.id;
-            system.equipment[pipeName] = newPipe;
+            system.pipes.push(newPipe);
             scope.equipment.push(newPipe);
 
 
@@ -114,8 +112,6 @@ app.directive('toolbar', function($rootScope){
         _profile.hfPipe = _profile.friction * _profile.hv * _profile.LD;
 
     }
-
-
 
 
     scope.calculate = function(){
@@ -210,38 +206,18 @@ app.directive('toolbar', function($rootScope){
                 system.pump.tdh = system.discharge[0].h - system.suction[0].h;
 
             else console.log('tdh error', system.discharge, system.suction);
-            console.log(pump);
 
 
-            var a = +system.temp + 233.426;
-            console.log('a', a);
-            var b = 1730 / a;
-            console.log('b', b);
-            var c = 8.06131 - b;
-            console.log('c', c);
+
+            // 0.133 is a conversion ratio
+            var vaporP = Math.pow(10, 8.06131 - (1730 / (+system.temp + 233.426))) * 0.133;
 
 
-            var rawVapP = Math.pow(10, c);
-
-            console.log(rawVapP);
-            var vaporP = rawVapP * 0.133;
-
-            console.log('vaporP',vaporP);
-            console.log('system temp', system.temp);
             if (vaporP > (system.atmosP + system.head.P.op))
                 vaporP = (system.head.P.op + system.atmosP);
-            console.log('after comparison',system.head.P.op);
-
-
-            console.log('pressure head',system.suction[0].hp);
-            console.log('atmos p',system.atmosP);
-            console.log('sg', system.head.sg);
 
 
             system.pump.npsha = (system.head.L.op - system.pump.elevation) + system.suction[0].hp - ((vaporP - system.atmosP) * 0.10197 / system.head.sg) - system.suction[0].hf - system.suction[0].extraLoss;
-
-
-            console.log(system.pump.npsha);
 
 
             //set data onto scope
@@ -256,18 +232,26 @@ app.directive('toolbar', function($rootScope){
 
 
 
-            // calculate NPSHa
-
         }
     }
 
-      scope.connect = function(){
-        var connections = jsPlumb.getAllConnections();
-        connections.forEach(conn => {
-            var src = system.equipment[conn.source.id];
-            src.connections.push(conn.target.id);
-        })
-      }
+    // detach all connections and remove all pipes from the system
+    scope.disconnectAll = function(){
+        jsPlumb.detachEveryConnection();
+        system.pipes = [];
+        // for (var x = 0; x < system.pipes.length; x++){
+        //     system.pipes[x] = null;
+        // }
+    }
+
+
+    scope.connect = function(){
+    var connections = jsPlumb.getAllConnections();
+    connections.forEach(conn => {
+    var src = system.equipment[conn.source.id];
+    src.connections.push(conn.target.id);
+    })
+    }
 
 
     }
