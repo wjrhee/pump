@@ -9,7 +9,7 @@ body {
     padding: 0;
 }
 
-.jtk-main {
+.jtk-demo-main {
     background-color: transparent;
     font-family: Arial,sans-serif;
     margin-left: auto;
@@ -20,7 +20,7 @@ body {
     margin-top:98px;
 }
 
-.jtk-main .description {
+.jtk-demo-main .description {
     font-size: 13px;
     margin-top: 25px;
     padding: 13px;
@@ -28,11 +28,11 @@ body {
     background-color: #f4f5ef;
 }
 
-.jtk-main .description li {
+.jtk-demo-main .description li {
     list-style-type: disc !important;
 }
 
-.jtk-canvas {
+.jtk-demo-canvas {
     margin-left: 160px;
     height:550px;
     max-height:700px;
@@ -52,7 +52,7 @@ body {
 }
 
 
-.jtk-dataset {
+.jtk-demo-dataset {
     text-align: left;
     max-height: 600px;
     overflow: auto;
@@ -135,7 +135,7 @@ li {
         margin-top: 7px;
         width:67px;
     }
-    .jtk-canvas {
+    .jtk-demo-canvas {
         margin-left: 0;
         margin-top:10px;
         height:364px;

@@ -1,4 +1,47 @@
-jsPlumb.ready(function() {
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    @import url(http://fonts.googleapis.com/css?family=Montserrat);
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+#removetask1 {
+    color: red;
+}
+#container {
+  position: relative;
+  border: 1px solid #aaaaaa;
+  width: 100%;
+  height: 650px;
+  background: #F7F7F7;
+}
+.title {
+  padding: 10px;
+}
+.project {
+  cursor: move;
+  border: 1px solid gray;
+  width: 150px;
+  height: auto;
+  background: #4DAF7C;
+  color: #ffffff;
+  position: absolute;
+}
+.task {
+  color: #723D61;
+  font-size: 16px;
+  border: 1px solid #D8D8D8;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+  </style>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"/>
+  <script type="text/javascript">
+    jsPlumb.ready(function() {
   // Temporary variable for identifying new projects/tasks
   var i = 6;
 
@@ -106,3 +149,18 @@ function addTask(parentId, id) {
     anchor:["Continuous", { faces:["left", "right"] } ]
   });
 }
+
+
+  </script>
+</head>
+<body>
+  <button id='removetask1' type="button">Remove Task 1</button>
+  <button id='addproject' type="button">Add project!</button>
+  <button id='deleteallcons' type="button">Delete all connections</button>
+  <button id='deleteall' type="button">Delete all</button>
+  <button id='repaintall' type="button">Repaint all</button>
+  <div id="container">
+  </div>
+
+</body>
+</html>

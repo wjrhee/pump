@@ -4,9 +4,7 @@ var workbook = xlsx.readFile('../../public/pipe.xlsx');
 var sheetNames = workbook.SheetNames;
 var pipeTable = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
-
 console.log(pipeTable);
-
 
 
 class Profile{
@@ -123,46 +121,5 @@ class Pump extends Equipment{
 }
 
 var system = new System();
-
-
-// var colorChild = function(svgElem, color){
-//   Array.from($(svgElem).children()).forEach(child => {
-//     $(child).attr('fill', color);
-//   })
-// }
-
-// var colorSnapped = function() {
-
-//     var allDraggables = $('svg');
-//     for(var x = 0; x < allDraggables.length; x++){
-
-//       if(!$(allDraggables[x]).draggable().data('uiDraggable').snapElements){
-//         $(allDraggables[x]).draggable().data('uiDraggable').snapElements = [];
-
-//         colorChild(allDraggables[x], disconnectColor);
-//       }
-
-//         Array.from($(allDraggables[x]).draggable().data('uiDraggable').snapElements).forEach(function(item){
-//           if(item.snapping){
-//             console.log(item);
-//             $(item.item.id)
-//             colorChild(item.item, connectColor);
-//             colorChild(allDraggables[x], connectColor);
-//           }
-//           else if(Array.from($(allDraggables[x]).draggable().data('uiDraggable').snapElements).every(function(item){
-//             return !item.snapping;
-//           })){
-//             colorChild(allDraggables[x], disconnectColor);
-
-//           }
-//       })
-
-//   }
-
-// }
-
-
-
-
 
 

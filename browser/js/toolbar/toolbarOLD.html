@@ -1,0 +1,186 @@
+
+<select ng-model="mode" ng-options="m for m in modes"></select>
+
+<div>
+    System
+      <label for="sf">Safety Factor</label>
+      <input type="text" ng-model="sf" name="sf">
+
+      <label for="atmosP">Atmospheric Pressure (kPa(a))</label>
+      <input type="text" ng-model="atmosP" name="atmosP">
+
+      <label for="temp">System Temperature (deg C)</label>
+      <input type="text" ng-model="temp" name="temp">
+</div>
+
+<div ng-show="mode == 'edit'">
+    <label for="eq">Equipment to Edit</label>
+    <select name="eq" ng-model="source" ng-options="eq.name for eq in equipment"></select>
+
+    <div ng-show="source.type == 'pipe'">
+        <label for="name">Name</label>
+        <p name="name">{{source.name}}</p>
+        <!-- <input type="text" ng-model="source.name" name="name"> -->
+
+        <label for="matl">Material</label>
+        <input type="text" ng-model="source.matl" name="matl">
+
+        <label for="length">Length (m)</label>
+        <input type="text" ng-model="source.length" name="length">
+
+        <label for="nps">Nominal Size (mm)</label>
+        <select ng-model="source.nps" ng-options="n for n in nps"></select>
+        <!-- <input type="text" ng-model="source.nps" name="nps"> -->
+
+        <label for="sch">Schedule</label>
+        <select ng-model="source.sch" ng-options="s for s in sch"></select>
+        <!-- <input type="text" ng-model="source.sch" name="sch"> -->
+
+        <label for="roughness">Roughness (m)</label>
+        <input type="text" ng-model="source.roughness" name="roughness">
+
+        <label for="flow">Flow (cu.m / hr)</label>
+        <input type="text" ng-model="source.flow" name="flow">
+
+        <label for="start">Start</label>
+        <p type="text" name="start">{{source.start}}</p>
+
+        <label for="end">End</label>
+        <p type="text" name="end">{{source.end}}</p>
+
+        <button ng-click="editpipe()">edit</button>
+
+    </div>
+
+    <div ng-show="source.type== 'vessel'">
+        <form>
+        <label for="name">Name</label>
+        <p name="name">{{source.name}}</p>
+        <!-- <input type="text" ng-model="source.name" name="name"> -->
+
+        <label for="min_P">Minimum Pressure (kPa(a))</label>
+        <input type="text" ng-model="source.P.min" name="min_P">
+
+        <label for="max_P">Maximum Pressure (kPa(a))</label>
+        <input type="text" ng-model="source.P.max" name="max_P">
+
+        <label for="op_P">Operating Pressure (kPa(a))</label>
+        <input type="text" ng-model="source.P.op" name="op_P">
+
+        <label for="min_L">Minimum Level (m)</label>
+        <input type="text" ng-model="source.L.min" name="min_L">
+
+        <label for="max_L">Maximum Level (m)</label>
+        <input type="text" ng-model="source.L.max" name="max_L">
+
+        <label for="op_L">Operating Level (m)</label>
+        <input type="text" ng-model="source.L.op" name="op_L">
+
+        <label for="sg">Specific Gravity</label>
+        <input type="text" ng-model="source.sg" name="sg">
+        <label for="composition">Composition</label>
+        <input type="text" ng-model="source.composition" name="composition">
+        <button ng-click="editvessel()">edit</button>
+        </form>
+    </div>
+
+    <div ng-show="source.type == 'pump'">
+      <form>
+        <label for="name">Name</label>
+        <p name="name">{{source.name}}</p>
+        <input type="text" ng-model="source.name" name="name">
+        <label for="flow">Flow (cu.m / hr)</label>
+        <input type="text" ng-model="source.flow" name="flow">
+        <label for="viscosity">Viscosity (Pa-s)</label>
+        <input type="text" ng-model="source.viscosity" name="viscosity">
+        <label for="elevation">Elevation (m)</label>
+        <input type="text" ng-model="source.elevation" name="elevation">
+        <button ng-click="editpump()">edit</button>
+      </form>
+    </div>
+</div>
+
+
+<div ng-show="mode == 'create'">
+    <label for="eqcreate">Create Equipment</label>
+    <select name="eqcreate" ng-model="type" ng-options="item for item in items"></select>
+
+    <div id="vessel-form" ng-show="type =='Vessel'">
+      <form>
+        <label for="name">Name</label>
+        <input type="text" ng-model="vessel.name" name="name">
+        <label for="min_P">Minimum Pressure (kPa(a))</label>
+        <input type="text" ng-model="vessel.min_P" name="min_P">
+        <label for="max_P">Maximum Pressure (kPa(a))</label>
+        <input type="text" ng-model="vessel.max_P" name="max_P">
+        <label for="op_P">Operating Pressure (kPa(a))</label>
+        <input type="text" ng-model="vessel.op_P" name="op_P">
+
+        <label for="min_L">Minimum Level (m)</label>
+        <input type="text" ng-model="vessel.min_L" name="min_L">
+        <label for="max_L">Maximum Level (m)</label>
+        <input type="text" ng-model="vessel.max_L" name="max_L">
+        <label for="op_L">Operating Level (m)</label>
+        <input type="text" ng-model="vessel.op_L" name="op_L">
+        <label for="sg">Specific Gravity</label>
+        <input type="text" ng-model="vessel.sg" name="sg">
+        <label for="composition">Composition</label>
+        <input type="text" ng-model="vessel.composition" name="composition">
+      </form>
+    </div>
+
+    <div id="pump-form" ng-show="type =='Pump'">
+      <form>
+        <label for="name">Name</label>
+        <input type="text" ng-model="pump.name" name="name">
+        <label for="flow">Flow (cu.m / hr)</label>
+        <input type="text" ng-model="pump.flow" name="flow">
+
+      </form>
+
+    </div>
+    <div>
+        <button id="create" ng-click="create(type)">create</button>
+    </div>
+</div>
+
+<button ng-click="calculate()">calculate</button>
+
+
+<div id="answer">
+    <div>
+        <p class="answer-class">TDH (m)</p>
+        <p class="answer-class">{{tdh}}</p>
+    </div>
+    <div>
+        <p class="answer-class">NPSHa</p>
+        <p class="answer-class">{{npsha}}</p>
+    </div>
+    <div>
+        <p class="answer-class">Discharge Pressure (m)</p>
+        <p class="answer-class">{{dischargeP}}</p>
+    </div>
+    <div>
+        <p class="answer-class">Suction Pressure (m)</p>
+        <p class="answer-class">{{suctionP}}</p>
+    </div>
+    <div>
+        <p class="answer-class">Discharge Velocity (m/s)</p>
+        <p class="answer-class">{{dischargeV}}</p>
+    </div>
+    <div>
+        <p class="answer-class">Suction Velocity (m/s)</p>
+        <p class="answer-class">{{suctionV}}</p>
+    </div>
+    <div>
+        <p class="answer-class">Discharge Reynold's Number</p>
+        <p class="answer-class">{{dischargeRe}}</p>
+    </div>
+    <div>
+        <p class="answer-class">Suction Reynold's Number</p>
+        <p class="answer-class">{{suctionRe}}</p>
+    </div>
+
+
+
+</div>
