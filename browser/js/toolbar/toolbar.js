@@ -8,8 +8,57 @@ app.directive('toolbar', function($rootScope){
         link: function(scope, element, attrs){
             var connectionPoints = ['TopCenter', 'RightMiddle', 'BottomCenter', 'LeftMiddle'];
 
-            scope.addNewEq = function(){
+            // setup all the options
+            scope.items = ['Vessel', 'Pump', 'Fitting'];
+            scope.modes = ['create', 'edit'];
+            scope.mode = scope.modes[0];
+            scope.equipment = [];
+            scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
+            scope.nps = Object.keys(pipeTable);
+
+            // function to create new equipment both in memory and the jsPlumb visualization on the canvas
+
+            scope.create = function(t){
+
+                switch (t){
+                  case 'Vessel':
+                    addEq(scope.vessel.name, '#vesselSVG');
+
+                    var vessel = new Vessel(scope.vessel);
+                    system.equipment[scope.vessel.name] = vessel;
+                    scope.equipment.push(vessel);
+
+                    if (scope.sf) system.sf = scope.sf;
+
+                    break;
+                  case 'Pump':
+                    if(!system.pump){
+                        addEq(scope.pump.name, '#pumpSVG');
+
+                        var pump = new Pump(scope.pump.flow, scope.pump.name);
+                        system.equipment[scope.pump.name] = pump;
+                        scope.equipment.push(pump);
+                        if(scope.sf) system.sf = scope.sf;
+                        system.pump = pump;
+                    }
+                    else{
+                        console.log('already have a pump');
+                    }
+
+                    break;
+                    // create case for fittings
+
+                  default:
+                    break;
+                }
+            }
+
+
+            scope.create = function(){
+
                 var id = $('#eqNameInput').val();
+                $('#eqNameInput').val('');
+
                 var newNode = $('<div>').attr('id', id).addClass('window jtk-node');
                 $('#canvas').append(newNode);
                 newNode.append(`<strong>${id}</strong>`)

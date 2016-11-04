@@ -1,4 +1,3 @@
-window.app = angular.module('app', []);
 var xlsx = require('xlsx');
 var workbook = xlsx.readFile('../../public/pipe.xlsx');
 var sheetNames = workbook.SheetNames;
@@ -24,22 +23,20 @@ class Profile{
     this.velocity = 0;
     this.extraLoss = 0;
   }
-
 }
 
 class System{
   constructor(){
+    // default system values
     this.equipment = {};
     this.pipes = [];
     this.head = null;
     this.suction = [];
     this.discharge = [];
     this.atmosP = 101;
-
     this.sf = 1;
     this.pump = null;
     this.temp = 0;
-
   }
 }
 
