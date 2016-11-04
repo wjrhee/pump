@@ -1,12 +1,6 @@
 
 .flowchart .window {
-    border: 1px solid #346789;
-    box-shadow: 2px 2px 19px #aaa;
-    -o-box-shadow: 2px 2px 19px #aaa;
-    -webkit-box-shadow: 2px 2px 19px #aaa;
-    -moz-box-shadow: 2px 2px 19px #aaa;
-    -moz-border-radius: 0.5em;
-    border-radius: 0.5em;
+    border: 1px solid #999999;
     opacity: 0.8;
     width: 80px;
     height: 80px;
@@ -20,18 +14,10 @@
     font-family: helvetica, sans-serif;
     padding: 0.5em;
     font-size: 0.9em;
-    -webkit-transition: -webkit-box-shadow 0.15s ease-in;
-    -moz-transition: -moz-box-shadow 0.15s ease-in;
-    -o-transition: -o-box-shadow 0.15s ease-in;
-    transition: box-shadow 0.15s ease-in;
 }
 
 .flowchart .window:hover {
-    box-shadow: 2px 2px 19px #444;
-    -o-box-shadow: 2px 2px 19px #444;
-    -webkit-box-shadow: 2px 2px 19px #444;
-    -moz-box-shadow: 2px 2px 19px #444;
-    opacity: 0.6;
+    opacity: 1;
 }
 
 .flowchart .active {
@@ -73,7 +59,7 @@
 }
 
 .jtk-drag {
-    outline: 4px solid pink !important;
+    outline: 4px solid #a0e7ff !important;
 }
 
 path, .jtk-endpoint {
