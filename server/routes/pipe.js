@@ -1,6 +1,6 @@
 const express = require('express');
 const router = new express.Router();
-const db = require('../models');
+const db = require('../db/models');
 const Pipe = db.model('pipe');
 // const Invoice_item = db.model('invoice_item');
 // const Invoice = db.model('invoice');

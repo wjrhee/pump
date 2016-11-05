@@ -1,10 +1,19 @@
-var xlsx = require('xlsx');
-var workbook = xlsx.readFile('../../public/pipe.xlsx');
-var sheetNames = workbook.SheetNames;
-var pipeTable = xlsx.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
-console.log(pipeTable);
+var a = httpGetAsync('/api/nps/', function(res){
+  var pipeTable = JSON.parse(res);
+})
 
+
+function httpGetAsync(url, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+}
 
 class Profile{
   constructor(){
@@ -31,8 +40,13 @@ class System{
     this.equipment = {};
     this.pipes = [];
     this.head = null;
-    this.suction = [];
-    this.discharge = [];
+
+    // is this needed?
+    // ---------------
+    // this.suction = [];
+    // this.discharge = [];
+    // ---------------
+
     this.atmosP = 101;
     this.sf = 1;
     this.pump = null;
@@ -83,7 +97,7 @@ class Pipe{
     this.roughness = 0.00009144;
     this.flow = 0;
     this.flow_sf = 0;
-    this.fittings = [];
+    this.fittings = {};
     this.length = 0;
     this.matl = '316';
     this.nps = null;

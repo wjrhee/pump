@@ -14,36 +14,44 @@ app.directive('toolbar', function($rootScope){
             scope.mode = scope.modes[0];
             scope.equipment = [];
             scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
-            scope.nps = Object.keys(pipeTable);
+            // scope.nps = Object.keys(pipeTable);
 
             // function to create new equipment both in memory and the jsPlumb visualization on the canvas
 
-            scope.create = function(t){
+            scope.create = function(eqType){
 
-                switch (t){
+                switch (eqType){
                   case 'Vessel':
-                    addEq(scope.vessel.name, '#vesselSVG');
 
-                    var vessel = new Vessel(scope.vessel);
-                    system.equipment[scope.vessel.name] = vessel;
-                    scope.equipment.push(vessel);
+                    // _addEq(scope.vessel.name, '#vesselSVG');
 
-                    if (scope.sf) system.sf = scope.sf;
+                    // create a new instance of a vessel
+                    var newVessel = new Vessel(scope.vessel);
+                    console.log(newVessel);
+                    system.equipment[scope.vessel.name] = newVessel;
+                    // scope.equipment.push(vessel);
+
+                    // if (scope.sf) system.sf = scope.sf;
 
                     break;
                   case 'Pump':
-                    if(!system.pump){
-                        addEq(scope.pump.name, '#pumpSVG');
+                    console.log(scope.pump);
+                  // allow for multiple pumps in the system?
+                  // yes.  it's uncommon but there are booster pumps
+                  // how would the calculation work..
+                  // find the worst case scenario for each discharge, calculate the first TDH.  the second TDH will be the pressure differential between the suction side, which is coming from the first pump to the worst case scenario
 
-                        var pump = new Pump(scope.pump.flow, scope.pump.name);
-                        system.equipment[scope.pump.name] = pump;
-                        scope.equipment.push(pump);
-                        if(scope.sf) system.sf = scope.sf;
-                        system.pump = pump;
-                    }
-                    else{
-                        console.log('already have a pump');
-                    }
+                    // _addEq(scope.pump.name, '#pumpSVG');
+
+                    var newPump = new Pump(scope.pump.flow, scope.pump.name);
+                    system.equipment[scope.pump.name] = newPump;
+                    console.log(newPump)
+                    // scope.equipment.push(pump);
+                    // if(scope.sf) system.sf = scope.sf;
+
+                    // set the system pump
+                    // system.pump = pump;
+
 
                     break;
                     // create case for fittings
@@ -53,8 +61,8 @@ app.directive('toolbar', function($rootScope){
                 }
             }
 
-
-            scope.create = function(){
+            // function to create a new visual representation of the equipment on the canvas
+            var _addEq = function(){
 
                 var id = $('#eqNameInput').val();
                 $('#eqNameInput').val('');
