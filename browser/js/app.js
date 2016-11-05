@@ -1,4 +1,5 @@
-window.app = angular.module('app', []);
+window.app = angular.module('app', ['ui.router']);
+
 
 var connectorPaintStyle = {
     strokeWidth: 2,
@@ -113,8 +114,31 @@ jsPlumb.ready(function () {
         });
 
         instance.bind("connectionDragStop", function (connection) {
-            console.log('dragged and stopped: ',connection)
-        });
+
+            if(system.equipment[connection.sourceId] && system.equipment[connection.targetId]){
+                var src = system.equipment[connection.sourceId];
+                var tgt = system.equipment[connection.targetId];
+
+                // initialize new pipe and store it into the system
+
+                var pipeName = 'pipe-' + connection.sourceId + '-' + connection.targetId;
+                var newPipe = new Pipe(pipeName);
+                newPipe.source = connection.sourceId;
+                newPipe.target = connection.targetId;
+                // system.pipes.push(newPipe);
+                // scope.equipment.push(newPipe);
+
+                src.connectionTo[pipeName] = newPipe;
+
+                tgt.connectionFrom[pipeName] = newPipe;
+
+                console.log(system.equipment);
+
+            }
+            else{
+                console.log('pipe not created.  no connection');
+            }
+        })
 
         instance.bind("connectionMoved", function (params) {
             console.log("connection moved: ", params);

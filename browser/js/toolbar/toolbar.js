@@ -2,59 +2,56 @@
 
 
 app.directive('toolbar', function($rootScope){
+
     return {
         restrict: 'E',
         templateUrl: '/js/toolbar/toolbar.html',
-        link: function(scope, element, attrs){
+        scope:{
+
+        },
+        controller: function($scope){
+            console.log($scope);
+
             var connectionPoints = ['TopCenter', 'RightMiddle', 'BottomCenter', 'LeftMiddle'];
 
             // setup all the options
-            scope.items = ['Vessel', 'Pump', 'Fitting'];
-            scope.modes = ['create', 'edit'];
+            $scope.items = ['Vessel', 'Pump', 'Fitting'];
+            $scope.modes = ['create', 'edit'];
             // set the initial value of mode
-            scope.mode = scope.modes[0];
-            scope.equipment = [];
+            $scope.mode = $scope.modes[0];
+            // $scope.equipment = [];
             // these need to match the field names from the returned nps json object
-            scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
-            // scope.nps = Object.keys(pipeTable);
+            $scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
+            // $scope.nps = Object.keys(pipeTable);
 
             // function to create new equipment both in memory and the jsPlumb visualization on the canvas
 
-            scope.create = function(eqType){
+            $scope.create = function(eqType){
 
                 switch (eqType){
                   case 'Vessel':
 
-                    // _addEq(scope.vessel.name, '#vesselSVG');
-
                     // create a new instance of a vessel
-                    var newVessel = new Vessel(scope.vessel);
-                    system.equipment[scope.vessel.name] = newVessel;
-                    drawEq(scope.vessel.name);
-                    // scope.equipment.push(vessel);
+                    var newVessel = new Vessel($scope.vessel);
+                    system.equipment[$scope.vessel.name] = newVessel;
+                    drawEq($scope.vessel.name);
+                    // $scope.equipment.push(vessel);
 
-                    // if (scope.sf) system.sf = scope.sf;
+                    if ($scope.sf) system.sf = $scope.sf;
 
                     break;
                   case 'Pump':
-                    console.log(scope.pump);
+                    console.log($scope.pump);
                   // allow for multiple pumps in the system?
                   // yes.  it's uncommon but there are booster pumps
-                  // how would the calculation work..
-                  // find the worst case scenario for each discharge, calculate the first TDH.  the second TDH will be the pressure differential between the suction side, which is coming from the first pump to the worst case scenario
 
-                    // _addEq(scope.pump.name, '#pumpSVG');
+                  // find the worst case scenario for each discharge off of the upstream pump, and calculate the TDH.  the downstream pump's TDH will be the pressure differential between the suction side, which is coming from the first pump to the worst case scenario.
 
-                    var newPump = new Pump(scope.pump.flow, scope.pump.name);
-                    system.equipment[scope.pump.name] = newPump;
-                    // console.log(newPump)
-                    drawEq(scope.pump.name);
-                    // scope.equipment.push(pump);
-                    // if(scope.sf) system.sf = scope.sf;
+                    var newPump = new Pump($scope.pump.flow, $scope.pump.name);
+                    system.equipment[$scope.pump.name] = newPump;
 
-                    // set the system pump
-                    // system.pump = pump;
-
+                    drawEq($scope.pump.name);
+                    // $scope.equipment.push(pump);
 
                     break;
                     // create case for fittings
@@ -66,26 +63,28 @@ app.directive('toolbar', function($rootScope){
 
             // function to create a new visual representation of the equipment on the canvas
             var drawEq = function(name){
-
-                // var id = $('#eqNameInput').val();
-                // $('#eqNameInput').val('');
-
-                var newNode = $('<div>').attr('id', name).addClass('window jtk-node');
-                $('#canvas').append(newNode);
-                newNode.append(`<strong>${name}</strong>`)
-                instance.draggable(newNode, {
-                    containment: 'parent'
-                })
-                instance.makeTarget(newNode, {
-                    anchor: ["Continuous", {
-                        faces: ["left", "right"]
-                    }]
-                })
-                connectionPoints.forEach(connPt => {
-                    instance.addEndpoint(newNode, sourceEndpoint, {
-                        anchor: connPt, uuid: connPt + name
+                if(system.equipment[name]){
+                    var newNode = $('<div>').attr('id', name).addClass('window jtk-node');
+                    $('#canvas').append(newNode);
+                    newNode.append(`<strong>${name}</strong>`)
+                    instance.draggable(newNode, {
+                        containment: 'parent'
                     })
-                })
+                    instance.makeTarget(newNode, {
+                        anchor: ["Continuous", {
+                            faces: ["left", "right"]
+                        }]
+                    })
+                    connectionPoints.forEach(connPt => {
+                        instance.addEndpoint(newNode, sourceEndpoint, {
+                            anchor: connPt, uuid: connPt + name
+                        })
+                    })
+                }
+                else{
+                    console.log('equipment with name already exists');
+                }
+
             }
         }
 

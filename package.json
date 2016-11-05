@@ -19,7 +19,7 @@
   "homepage": "https://github.com/wjrhee/pump-calc#readme",
   "dependencies": {
     "angular": "^1.5.8",
-    "angular-ui-router": "^1.0.0-beta.2",
+    "angular-ui-router": "^1.0.0-beta.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "interact": "0.0.3",

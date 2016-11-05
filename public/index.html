@@ -11,14 +11,21 @@
       <link rel="stylesheet" href="/css/app.css">
       <script src="jsPlumb-2.2.3.js"></script>
       <script src="/angular/angular.js"></script>
+      <script src="/angular-ui-router/release/angular-ui-router.js"></script>
+
       <script src="/js/main.js" defer></script>
       <script src="/js/app.js" defer></script>
+      <script src="/js/home/home.state.js" defer></script>
       <script src="/js/toolbar/toolbar.js" defer></script>
   </head>
 
   <body>
     <div ng-app="app">
-      <toolbar></toolbar>
+    <li ui-sref-active="active">
+        <a ui-sref="home">home</a>
+        <a ui-sref="about">about</a>
+      </li>
+      <ui-view></ui-view>
     </div>
     <div class="jtk-main">
       <div class="jtk-canvas canvas-wide flowchart jtk-surface jtk-surface-nopan" id="canvas">
