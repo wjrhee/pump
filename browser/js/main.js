@@ -2,12 +2,24 @@
 class Profile{
   constructor(){
     this.name = null;
-    this.h = 0;
-    this.hs = 0;
-    this.hf = 0;
-    this.hp = 0;
-    this.hfPipe = 0;
-    this.hfFittings = 0;
+    this.h = {
+
+    };
+    this.hs = {
+
+    };
+    this.hf = {
+
+    };
+    this.hp ={
+
+    };
+    this.hfPipe = {
+
+    };
+    this.hfFittings = {
+
+    };
     this.LD = 0;
     this.ed = 0;
     this.Re = 0;
@@ -16,6 +28,24 @@ class Profile{
     this.velocity = 0;
     this.extraLoss = 0;
   }
+  calcInnerDia(){
+
+  }
+  calcHs(){
+
+  }
+  calcHp(){
+
+  }
+  calcHfPipe(){
+
+  }
+  calcVelocity(){
+
+  }
+
+
+
 }
 
 class System{
