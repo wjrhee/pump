@@ -6,9 +6,7 @@ app.directive('toolbar', function($rootScope){
     return {
         restrict: 'E',
         templateUrl: '/js/toolbar/toolbar.html',
-        scope:{
-
-        },
+        scope: {},
         controller: function($scope){
             console.log($scope);
 
@@ -300,7 +298,7 @@ app.directive('toolbar', function($rootScope){
 //             else console.log('tdh error', system.discharge, system.suction);
 
 
-
+//             // use Antoine Coefficients for water
 //             // 0.133 is a conversion ratio
 //             var vaporP = Math.pow(10, 8.06131 - (1730 / (+system.temp + 233.426))) * 0.133;
 
