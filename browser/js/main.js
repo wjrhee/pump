@@ -1,19 +1,25 @@
+// load the pipe schedule table globally, in a promise, to be accessed everywhere.
 
-var a = httpGetAsync('/api/nps/', function(res){
-  var pipeTable = JSON.parse(res);
+var pipeTablePromise = new Promise(function(resolve, reject) {
+
+  var req = new XMLHttpRequest();
+  req.open('GET', '/api/nps');
+  req.onload = function(){
+    if(req.status == 200){
+      resolve(JSON.parse(req.response));
+    }
+    else{
+      reject(Error(req.statusText))
+    }
+  }
+  req.send();
+
+
+});
+pipeTablePromise.then(data => {
+  console.log(data);
 })
 
-
-function httpGetAsync(url, callback)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
-    }
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
-}
 
 class Profile{
   constructor(){

@@ -11,8 +11,10 @@ app.directive('toolbar', function($rootScope){
             // setup all the options
             scope.items = ['Vessel', 'Pump', 'Fitting'];
             scope.modes = ['create', 'edit'];
+            // set the initial value of mode
             scope.mode = scope.modes[0];
             scope.equipment = [];
+            // these need to match the field names from the returned nps json object
             scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
             // scope.nps = Object.keys(pipeTable);
 
@@ -27,8 +29,8 @@ app.directive('toolbar', function($rootScope){
 
                     // create a new instance of a vessel
                     var newVessel = new Vessel(scope.vessel);
-                    console.log(newVessel);
                     system.equipment[scope.vessel.name] = newVessel;
+                    drawEq(scope.vessel.name);
                     // scope.equipment.push(vessel);
 
                     // if (scope.sf) system.sf = scope.sf;
@@ -45,7 +47,8 @@ app.directive('toolbar', function($rootScope){
 
                     var newPump = new Pump(scope.pump.flow, scope.pump.name);
                     system.equipment[scope.pump.name] = newPump;
-                    console.log(newPump)
+                    // console.log(newPump)
+                    drawEq(scope.pump.name);
                     // scope.equipment.push(pump);
                     // if(scope.sf) system.sf = scope.sf;
 
@@ -62,14 +65,14 @@ app.directive('toolbar', function($rootScope){
             }
 
             // function to create a new visual representation of the equipment on the canvas
-            var _addEq = function(){
+            var drawEq = function(name){
 
-                var id = $('#eqNameInput').val();
-                $('#eqNameInput').val('');
+                // var id = $('#eqNameInput').val();
+                // $('#eqNameInput').val('');
 
-                var newNode = $('<div>').attr('id', id).addClass('window jtk-node');
+                var newNode = $('<div>').attr('id', name).addClass('window jtk-node');
                 $('#canvas').append(newNode);
-                newNode.append(`<strong>${id}</strong>`)
+                newNode.append(`<strong>${name}</strong>`)
                 instance.draggable(newNode, {
                     containment: 'parent'
                 })
@@ -80,7 +83,7 @@ app.directive('toolbar', function($rootScope){
                 })
                 connectionPoints.forEach(connPt => {
                     instance.addEndpoint(newNode, sourceEndpoint, {
-                        anchor: connPt, uuid: connPt + id
+                        anchor: connPt, uuid: connPt + name
                     })
                 })
             }
