@@ -1,25 +1,25 @@
 
 class Profile{
-  constructor(){
+  constructor(viscosity=0.00089){
     this.name = null;
     this.h = {
-
+      min: 0,
+      op: 0,
+      max: 0
     };
     this.hs = {
-
+      min: 0,
+      op: 0,
+      max: 0
     };
-    this.hf = {
-
+    this.hf = 0;
+    this.hp = {
+      min: 0,
+      op: 0,
+      max: 0
     };
-    this.hp ={
-
-    };
-    this.hfPipe = {
-
-    };
-    this.hfFittings = {
-
-    };
+    this.hfPipe = 0;
+    this.hfFittings = 0;
     this.LD = 0;
     this.ed = 0;
     this.Re = 0;
@@ -27,21 +27,37 @@ class Profile{
     this.hv = 0;
     this.velocity = 0;
     this.extraLoss = 0;
+    this.viscosity = viscosity;
   }
-  calcInnerDia(){
+  // pass in specific gravity, in cases where the specific gravity of target vessel is different from the specific gravity of the source pump?  but need to know flow direction as well.
+  calcHs(vessel, elevation){
+    for(var key in this.hs){
+      this.hs[key] = vessel.L[key] - elevation;
+    }
+    return this.hs;
+  }
+  calcHp(vessel){
+    for(var key in this.hp){
+      this.hp[key] = vessel.P[key] / (vessel.sg * 9.8);
+    }
+    return this.hp;
+  }
+  calcHfPipe(pipe, sg){
+    this.hv = Math.pow(this.velocity, 2) / (2 * 9.8);
+    this.ed = pipe.roughness / pipe.innerDia;
+    this.Re = this.velocity * pipe.innerDia * sg * 1000 / this.viscosity;
+    var A = -2 * Math.log10((this.ed / 3.7) + (12 / this.Re));
+    var B = -2 * Math.log10((this.ed / 3.7) + (2.51 * A / this.Re));
+    var C = -2 * Math.log10((this.ed / 3.7) + (2.51 * B / this.Re));
+    this.friction = Math.pow(((A - Math.pow((B - A), 2)) / (C - (2 * B) + A)), -2);
+    this.LD = +pipe.length / pipe.innerDia;
+    this.hfPipe = this.friction * this.hv * this.LD;
+    return this.hfPipe;
 
   }
-  calcHs(){
-
-  }
-  calcHp(){
-
-  }
-  calcHfPipe(){
-
-  }
-  calcVelocity(){
-
+  calcVelocity(flow, diameter){
+    this.velocity = flow / (Math.pow(diameter, 2) * (Math.PI / 4)) / 3600;
+    return this.velocity;
   }
 
 
@@ -80,7 +96,6 @@ class Vessel extends Equipment{
   constructor(data){
     super();
     this.connected = false;
-    this.type = 'vessel';
     this.name = data.name;
     this.P = {
       min: data.min_P,
@@ -107,7 +122,6 @@ class Vessel extends Equipment{
 class Pipe{
   constructor(name){
     this.name = name;
-    this.type = "pipe";
     this.roughness = 0.00009144;
     this.flow = 0;
     this.flow_sf = 0;
@@ -126,15 +140,24 @@ class Pipe{
   setFlow(sf){
     this.flow_sf = this.flow * sf;
   }
+  calcInnerDia(npsTable){
+
+    // get the inner diameter of the pipe in meters
+    // I guess this isn't so much of a calculation as it is just retrieving the data from the table.  The nps table was originally a listing of pipe thicknesses so a calculation used to make sense.
+    if(this.nps && this.sch){
+      this.innerDia = npsTable[this.nps][this.sch] / 1000;
+    }
+    console.log(this.innerDia)
+    return this.innerDia;
+  }
 
 }
 
 class Pump extends Equipment{
-  constructor(flow, name, viscosity=0.00089){
+  constructor(flow, name){
     super();
-    this.viscosity = viscosity;
+    // this.viscosity = viscosity;
     this.elevation = 1;
-    this.type = 'pump';
     this.name = name;
     // this.connections = [];
     this.tdh = null;

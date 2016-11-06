@@ -1,21 +1,21 @@
 
 
-    var setHp = function(_profile, _vessel){
-        _profile.hp = _vessel.P.op / (_vessel.sg * 9.8);
-        return _profile.hp;
+    // var setHp = function(_profile, _vessel){
+    //     _profile.hp = _vessel.P.op / (_vessel.sg * 9.8);
+    //     return _profile.hp;
+    // }
 
-    }
+    // var setHs = function(_profile, _vessel){
+    //     _profile.hs = _vessel.L.op - system.pump.elevation;
+    //     return _profile.hs;
+    // }
 
-    var setHs = function(_profile, _vessel){
-        _profile.hs = _vessel.L.op - system.pump.elevation;
-        return _profile.hs;
-    }
-    var setInnerDia = function(_pipe){
-        _pipe.innerDia = pipeTable[_pipe.nps][_pipe.sch] / 1000;
+    // var setInnerDia = function(_pipe){
+    //     _pipe.innerDia = pipeTable[_pipe.nps][_pipe.sch] / 1000;
 
-        return _pipe.innerDia;
+    //     return _pipe.innerDia;
 
-    }
+    // }
 
     var setHfPipe = function(_profile, _pipe, _vessel){
         _profile.velocity = _pipe.flow_sf / (Math.pow(_pipe.innerDia,2) * (Math.PI / 4)) / 3600;

@@ -5,24 +5,26 @@ app.config(function($stateProvider) {
         resolve:{
             nps: function(){
                 var npsDataPromise = new Promise(function(resolve, reject) {
-
-                var req = new XMLHttpRequest();
-                req.open('GET', '/api/nps');
-                req.onload = function(){
-                if(req.status == 200){
-                  resolve(JSON.parse(req.response));
-                }
-                else{
-                  reject(Error(req.statusText))
-                }
-                }
-                req.send();
-
-
+                    var req = new XMLHttpRequest();
+                    req.open('GET', '/api/nps');
+                    req.onload = function(){
+                    if(req.status == 200){
+                      resolve(JSON.parse(req.response));
+                    }
+                    else{
+                      reject(Error(req.statusText))
+                    }
+                    }
+                    req.send();
                 });
+                var npsTable = {};
 
-                return npsDataPromise.then(data => {
-                    return data;
+                return npsDataPromise.then(npsData => {
+                    npsData.forEach(item => {
+                        npsTable[item.nps] = item;
+                    })
+                    console.log(npsTable);
+                    return npsTable;
                 })
             },
             fittings: function(){
