@@ -113,7 +113,7 @@ jsPlumb.ready(function () {
 
         });
 
-        instance.bind("connectionDragStop", function (connection) {
+        instance.bind("connection", function (connection, e) {
 
             if(system.equipment[connection.sourceId] && system.equipment[connection.targetId]){
                 var src = system.equipment[connection.sourceId];
@@ -125,19 +125,28 @@ jsPlumb.ready(function () {
                 var newPipe = new Pipe(pipeName);
                 newPipe.source = connection.sourceId;
                 newPipe.target = connection.targetId;
-                // system.pipes.push(newPipe);
+                system.pipes[pipeName] = newPipe;
                 // scope.equipment.push(newPipe);
 
                 src.connectionTo[pipeName] = newPipe;
 
                 tgt.connectionFrom[pipeName] = newPipe;
-
-                console.log(system.equipment);
+                console.log(system);
 
             }
             else{
                 console.log('pipe not created.  no connection');
             }
+        })
+
+        instance.bind("connectionDetached", function(connection,e){
+            var pipeName = 'pipe-' + connection.sourceId + '-' + connection.targetId;
+
+            if(system.pipes[pipeName]){
+                delete system.pipes[pipeName]
+            }
+            console.log(system);
+
         })
 
         instance.bind("connectionMoved", function (params) {

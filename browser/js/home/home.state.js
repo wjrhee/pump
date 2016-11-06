@@ -20,8 +20,9 @@ app.config(function($stateProvider) {
                 var npsTable = {};
 
                 return npsDataPromise.then(npsData => {
+                    console.log(npsData);
                     npsData.forEach(item => {
-                        npsTable[item.nps] = item;
+                        npsTable[item.NPS] = item;
                     })
                     console.log(npsTable);
                     return npsTable;
