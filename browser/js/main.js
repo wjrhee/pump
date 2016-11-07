@@ -18,14 +18,34 @@ class System{
   }
 }
 
-// set
+// setup a check function to determine if the system is set up in a way to allow for a calculation
+
+System.prototype.check = function(){
+  for(var key in this.equipment){
+    if(this.equipment[key] instanceof Pump){
+      if(this.equipment[key].connectionTo.length === 0 || this.equipment[key].connectionFrom.length === 0){
+        return false;
+      }
+    }
+    else if(this.equipment[key] instanceof Vessel){
+      // have checks for vessels
+    }
+  }
+  return true;
+
+}
 
 System.prototype.calculate = function(temp, atmosP){
   // find all the starting points for the calculation
-  this.equipment.forEach(item => {
-    if(item.connectedFrom.length === 0){
-      this.heads.push(item);
+  for(var key in this.equipment){
+    if(this.equipment[key].connectedFrom.length === 0){
+      this.heads.push(this.equipment[key]);
     }
+  }
+
+
+  this.heads.forEach(head => {
+    head.profile = new Profile();
   })
 
   // for(var eq in this.equipment){
