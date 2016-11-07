@@ -126,11 +126,10 @@ jsPlumb.ready(function () {
                 system.pipes[pipeName] = newPipe;
                 // scope.equipment.push(newPipe);
 
-                src.connectionTo[pipeName] = newPipe;
+                src.connectionTo.push(newPipe);
+                tgt.connectionFrom.push(newPipe);
 
-                tgt.connectionFrom[pipeName] = newPipe;
                 console.log(system);
-
             }
             else{
                 console.log('pipe not created.  no connection');
@@ -143,6 +142,23 @@ jsPlumb.ready(function () {
             if(system.pipes[pipeName]){
                 delete system.pipes[pipeName]
             }
+
+            if(system.equipment[connection.sourceId]){
+                for(var i = 0; i < system.equipment[connection.sourceId].connectionTo.length; i++){
+                    if(system.equipment[connection.sourceId].connectionTo[i].name === pipeName){
+                        system.equipment[connection.sourceId].connectionTo.splice(i, 1);
+                    }
+                }
+            }
+
+            if(system.equipment[connection.targetId]){
+                for(var i = 0; i < system.equipment[connection.targetId].connectionFrom.length; i++){
+                    if(system.equipment[connection.targetId].connectionFrom[i].name === pipeName){
+                        system.equipment[connection.targetId].connectionFrom.splice(i, 1);
+                    }
+                }
+            }
+
             console.log(system);
 
         })

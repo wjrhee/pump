@@ -19,12 +19,13 @@ app.directive('toolbar', function($rootScope){
                 system.temp = +$('#temp').val();
             })
 
-
+            // set where the connection points on the blocks will be
             var connectionPoints = ['TopCenter', 'RightMiddle', 'BottomCenter', 'LeftMiddle'];
 
             // setup all the options
             $scope.items = ['Vessel', 'Pump', 'Fitting'];
             $scope.modes = ['create', 'edit'];
+
             // set the initial value of mode
             $scope.mode = $scope.modes[0];
 

@@ -3,7 +3,7 @@ class System{
     // default system values
     this.equipment = {};
     this.pipes = {};
-    this.head = null;
+    this.heads = [];
 
     // is this needed?
     // ---------------
@@ -20,10 +20,19 @@ class System{
 
 // set
 
-// System.prototype.calculate = function(temp, atmosP){
-//   this.temp =
+System.prototype.calculate = function(temp, atmosP){
+  // find all the starting points for the calculation
+  this.equipment.forEach(item => {
+    if(item.connectedFrom.length === 0){
+      this.heads.push(item);
+    }
+  })
 
-// }
+  // for(var eq in this.equipment){
+  //   if(this.equipment)
+  // }
+
+}
 
 class Profile{
   constructor(viscosity = 0.00089){
@@ -105,7 +114,7 @@ class Vessel extends Equipment{
 
   constructor(data){
     super(data.name);
-    this.connected = false;
+    // this.connected = false;
     // this.name = data.name;
     this.P = {
       min: data.min_P,
