@@ -8,7 +8,17 @@ app.directive('toolbar', function($rootScope){
         templateUrl: '/js/toolbar/toolbar.html',
         scope: {},
         controller: function($scope){
-            console.log($scope);
+            // console.log($scope);
+            $('#sf').on("change", function(e){
+                system.sf = +$('#sf').val();
+            })
+            $('#atmosP').on("change", function(){
+                system.atmosP = +$('#atmosP').val();
+            })
+            $('#temp').on("change", function(){
+                system.temp = +$('#temp').val();
+            })
+
 
             var connectionPoints = ['TopCenter', 'RightMiddle', 'BottomCenter', 'LeftMiddle'];
 
@@ -17,7 +27,10 @@ app.directive('toolbar', function($rootScope){
             $scope.modes = ['create', 'edit'];
             // set the initial value of mode
             $scope.mode = $scope.modes[0];
-            // $scope.equipment = [];
+
+            // put all the equipment on the scope for the drop down menu
+            $scope.equipment = [];
+
             // these need to match the field names from the returned nps json object
             $scope.sch = ['5', '10', '20', '30', '40', 'STD', '80', 'XS'];
             // $scope.nps = Object.keys(pipeTable);
@@ -61,6 +74,8 @@ app.directive('toolbar', function($rootScope){
 
             // function to create a new visual representation of the equipment on the canvas
             var drawEq = function(name){
+
+                // TODO: create different graphic based on type
                 if(system.equipment[name]){
                     var newNode = $('<div>').attr('id', name).addClass('window jtk-node');
                     $('#canvas').append(newNode);

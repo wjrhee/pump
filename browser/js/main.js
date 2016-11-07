@@ -18,6 +18,13 @@ class System{
   }
 }
 
+// set
+
+// System.prototype.calculate = function(temp, atmosP){
+//   this.temp =
+
+// }
+
 class Profile{
   constructor(viscosity = 0.00089){
     this.name = null;
@@ -170,7 +177,6 @@ Pipe.prototype.calcInnerDiameter = function(npsTable){
   console.log(this.innerDiameter)
   return this.innerDiameter;
 }
-
 
 var system = new System();
 

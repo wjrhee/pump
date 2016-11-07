@@ -95,11 +95,9 @@ jsPlumb.ready(function () {
     // instance.registerConnectionType("basic", selectedConn);
 
 
-
-        init = function (connection) {
-            connection.getOverlay("label").setLabel(connection.sourceId.substring(15) + "-" + connection.targetId.substring(15));
-        };
-
+    init = function (connection) {
+        connection.getOverlay("label").setLabel(connection.sourceId + "-" + connection.targetId);
+    };
 
 
     instance.batch(function () {
