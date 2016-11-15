@@ -103,6 +103,16 @@ app.directive('toolbar', function($rootScope){
 
             // function to create new equipment both in memory and the jsPlumb visualization on the canvas
 
+            $scope.calculate = function(){
+                // run the system's check function
+                if(!system.check()){
+                    return;
+                }
+                system.calculate() // pass in the temp and atmosP
+
+            }
+
+
             $scope.create = function(eqType){
                 switch (eqType){
                   case 'Vessel':

@@ -1,3 +1,10 @@
+// what are valid systems?
+// vessel - pump - vessel
+// vessel - vessel
+// if there's a pump there HAS to be a source and target
+// multiple pumps linked is ok.
+// Every pipe needs to have a source and target.  Cannot go to nowhere.
+
 class System{
   constructor(){
     // default system values
@@ -21,36 +28,53 @@ class System{
 // setup a check function to determine if the system is set up in a way to allow for a calculation
 
 System.prototype.check = function(){
+
+  // check that all pipes are connected on both ends
+  for(var key in this.pipes){
+    if(!this.pipes[key].source || !this.pipes[key].target){
+      return false;
+    }
+  }
+
+  // check if the pump is connected on both ends.
+  // if the pump is connected on both ends, we know the pipes have both a target and source so the system must be complete.
+
+
   for(var key in this.equipment){
     if(this.equipment[key] instanceof Pump){
       if(this.equipment[key].connectionTo.length === 0 || this.equipment[key].connectionFrom.length === 0){
         return false;
       }
     }
-    else if(this.equipment[key] instanceof Vessel){
-      // have checks for vessels
-    }
+    // else if(this.equipment[key] instanceof Vessel){
+    //   // have checks for vessels
+    // }
   }
   return true;
 
 }
 
-System.prototype.calculate = function(temp, atmosP){
+
+
+System.prototype.calculate = function(){
+  // check to see if the system can be calculated
+  this.heads.forEach(head => {
+    // flow through
+
+  })
+}
+
+
+System.prototype.findHeads = function(temp, atmosP){
   // find all the starting points for the calculation
   for(var key in this.equipment){
     if(this.equipment[key].connectedFrom.length === 0){
       this.heads.push(this.equipment[key]);
     }
   }
-
-
   this.heads.forEach(head => {
     head.profile = new Profile();
   })
-
-  // for(var eq in this.equipment){
-  //   if(this.equipment)
-  // }
 
 }
 
