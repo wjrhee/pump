@@ -156,7 +156,7 @@ class Vessel extends Equipment{
       op: data.op_L
     }
     this.sg = data.sg;
-    this.composition = data.composition;
+    // this.composition = data.composition;
     // this.svg = data.svg;
     // this.id = data.id;
   }
@@ -214,6 +214,5 @@ Pipe.prototype.calcInnerDiameter = function(npsTable){
 }
 
 var system = new System();
-// system.pipes['hello'] = new Pipe('hello')
 
 

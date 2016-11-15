@@ -14,15 +14,10 @@
       <label for="temp">System Temperature (deg C)</label>
       <input id="temp" type="text" ng-model="temp" name="temp">
 </div>
-lkjalsdf
-<div ng-repeat='(k,v) in pipes'>
-
-  {{v}}
-</div>
 
 <div ng-show="mode == 'edit'">
     <label for="eq">Equipment to Edit</label>
-    <select name="eq" id="selectEqToEdit" ng-model="source" ng-options="eq.name for eq in equipment"></select>
+    <select name="eq" ng-model="source" ng-options="eq.name for eq in equipment"></select>
 
     <div ng-show="source.type == 'pipe'">
         <label for="name">Name</label>
@@ -50,10 +45,10 @@ lkjalsdf
         <input type="text" ng-model="source.flow" name="flow">
 
         <label for="start">Start</label>
-        <p type="text" name="start">{{source.start}}</p>
+        <p type="text" name="start">{{source.source}}</p>
 
         <label for="end">End</label>
-        <p type="text" name="end">{{source.end}}</p>
+        <p type="text" name="end">{{source.target}}</p>
 
         <button ng-click="editpipe()">edit</button>
 
@@ -85,8 +80,8 @@ lkjalsdf
 
         <label for="sg">Specific Gravity</label>
         <input type="text" ng-model="source.sg" name="sg">
-        <label for="composition">Composition</label>
-        <input type="text" ng-model="source.composition" name="composition">
+        <!-- <label for="composition">Composition</label>
+        <input type="text" ng-model="source.composition" name="composition"> -->
         <button ng-click="editvessel()">edit</button>
         </form>
     </div>
@@ -131,8 +126,8 @@ lkjalsdf
         <input type="text" ng-model="vessel.op_L" name="op_L">
         <label for="sg">Specific Gravity</label>
         <input type="text" ng-model="vessel.sg" name="sg">
-        <label for="composition">Composition</label>
-        <input type="text" ng-model="vessel.composition" name="composition">
+        <!-- <label for="composition">Composition</label>
+        <input type="text" ng-model="vessel.composition" name="composition"> -->
       </form>
     </div>
 
