@@ -1,4 +1,5 @@
 // TODO: move all calculation code to new file
+// TODO: put all equipment and pipes on the scope so that the select menu can access it.
 
 
 app.directive('toolbar', function($rootScope){
@@ -8,6 +9,69 @@ app.directive('toolbar', function($rootScope){
         templateUrl: '/js/toolbar/toolbar.html',
         scope: {},
         controller: function($scope){
+            instance.bind("connection", function (connection, e) {
+
+                if(system.equipment[connection.sourceId] && system.equipment[connection.targetId]){
+                    var src = system.equipment[connection.sourceId];
+                    var tgt = system.equipment[connection.targetId];
+
+                    // initialize new pipe and store it into the system
+
+                    var pipeName = 'pipe-' + connection.sourceId + '-' + connection.targetId;
+                    var newPipe = new Pipe(pipeName);
+                    newPipe.source = connection.sourceId;
+                    newPipe.target = connection.targetId;
+                    system.pipes[pipeName] = newPipe;
+                    $scope.equipment.push(newPipe);
+
+                    src.connectionTo.push(newPipe);
+                    tgt.connectionFrom.push(newPipe);
+
+                }
+                else{
+                    console.log('pipe not created.  no connection');
+                }
+            })
+
+            instance.bind("connectionDetached", function(connection, e){
+                var pipeName = 'pipe-' + connection.sourceId + '-' + connection.targetId;
+
+                if(system.pipes[pipeName]){
+                    delete system.pipes[pipeName]
+                }
+                for(var i = 0; i < $scope.equipment.length; i++){
+                    if($scope.equipment[i].name === pipeName){
+                        $scope.equipment.splice(i,1);
+                    }
+                }
+
+                if(system.equipment[connection.sourceId]){
+                    for(var i = 0; i < system.equipment[connection.sourceId].connectionTo.length; i++){
+                        if(system.equipment[connection.sourceId].connectionTo[i].name === pipeName){
+                            system.equipment[connection.sourceId].connectionTo.splice(i, 1);
+                        }
+                    }
+                }
+
+                if(system.equipment[connection.targetId]){
+                    for(var i = 0; i < system.equipment[connection.targetId].connectionFrom.length; i++){
+                        if(system.equipment[connection.targetId].connectionFrom[i].name === pipeName){
+                            system.equipment[connection.targetId].connectionFrom.splice(i, 1);
+                        }
+                    }
+                }
+            })
+            // var p = [{name: 'hello'}];
+            // system.watch('pipes', function(id, oldVal, newVal){
+            //     console.log(newVal);
+            // })
+
+            // system.pipes.watch('', function(id, oldVal, newVal){
+            //     console.log(newVal);
+            // })
+            // $scope.pipes = system.pipes;
+
+
             // console.log($scope);
             $('#sf').on("change", function(e){
                 system.sf = +$('#sf').val();
@@ -26,7 +90,7 @@ app.directive('toolbar', function($rootScope){
             $scope.items = ['Vessel', 'Pump', 'Fitting'];
             $scope.modes = ['create', 'edit'];
 
-            // set the initial value of mode
+            // set the initial value of mode - 'create'
             $scope.mode = $scope.modes[0];
 
             // put all the equipment on the scope for the drop down menu
@@ -39,7 +103,6 @@ app.directive('toolbar', function($rootScope){
             // function to create new equipment both in memory and the jsPlumb visualization on the canvas
 
             $scope.create = function(eqType){
-
                 switch (eqType){
                   case 'Vessel':
 
@@ -47,9 +110,11 @@ app.directive('toolbar', function($rootScope){
                     var newVessel = new Vessel($scope.vessel);
                     system.equipment[$scope.vessel.name] = newVessel;
                     drawEq($scope.vessel.name);
-                    // $scope.equipment.push(vessel);
+                    $scope.equipment.push(newVessel);
 
-                    if ($scope.sf) system.sf = $scope.sf;
+                    if ($scope.sf) {
+                        system.sf = $scope.sf;
+                    }
 
                     break;
                   case 'Pump':

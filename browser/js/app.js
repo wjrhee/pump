@@ -111,57 +111,7 @@ jsPlumb.ready(function () {
 
         });
 
-        instance.bind("connection", function (connection, e) {
 
-            if(system.equipment[connection.sourceId] && system.equipment[connection.targetId]){
-                var src = system.equipment[connection.sourceId];
-                var tgt = system.equipment[connection.targetId];
-
-                // initialize new pipe and store it into the system
-
-                var pipeName = 'pipe-' + connection.sourceId + '-' + connection.targetId;
-                var newPipe = new Pipe(pipeName);
-                newPipe.source = connection.sourceId;
-                newPipe.target = connection.targetId;
-                system.pipes[pipeName] = newPipe;
-                // scope.equipment.push(newPipe);
-
-                src.connectionTo.push(newPipe);
-                tgt.connectionFrom.push(newPipe);
-
-                console.log(system);
-            }
-            else{
-                console.log('pipe not created.  no connection');
-            }
-        })
-
-        instance.bind("connectionDetached", function(connection,e){
-            var pipeName = 'pipe-' + connection.sourceId + '-' + connection.targetId;
-
-            if(system.pipes[pipeName]){
-                delete system.pipes[pipeName]
-            }
-
-            if(system.equipment[connection.sourceId]){
-                for(var i = 0; i < system.equipment[connection.sourceId].connectionTo.length; i++){
-                    if(system.equipment[connection.sourceId].connectionTo[i].name === pipeName){
-                        system.equipment[connection.sourceId].connectionTo.splice(i, 1);
-                    }
-                }
-            }
-
-            if(system.equipment[connection.targetId]){
-                for(var i = 0; i < system.equipment[connection.targetId].connectionFrom.length; i++){
-                    if(system.equipment[connection.targetId].connectionFrom[i].name === pipeName){
-                        system.equipment[connection.targetId].connectionFrom.splice(i, 1);
-                    }
-                }
-            }
-
-            console.log(system);
-
-        })
 
         instance.bind("connectionMoved", function (params) {
             console.log("connection moved: ", params);

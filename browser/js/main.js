@@ -135,7 +135,11 @@ class Vessel extends Equipment{
   constructor(data){
     super(data.name);
     // this.connected = false;
-    // this.name = data.name;
+    this.name = data.name;
+
+    this.type = 'vessel';
+    // it might not seem to make sense to create the 'type' property but it makes it easier for determining the type for ng-show logic
+
     this.P = {
       min: data.min_P,
       max: data.max_P,
@@ -163,7 +167,8 @@ class Pump extends Equipment{
     super(name);
     // this.viscosity = viscosity;
     this.elevation = 1;
-    // this.name = name;
+    this.name = name;
+    this.type = 'pump';
     // this.connections = [];
     this.tdh = null;
     this.suction_P = null;
@@ -176,6 +181,7 @@ class Pump extends Equipment{
 class Pipe{
   constructor(name){
     this.name = name;
+    this.type = 'pipe';
     this.roughness = 0.00009144;
     this.flow = 0;
     this.flow_sf = 0;
@@ -208,5 +214,6 @@ Pipe.prototype.calcInnerDiameter = function(npsTable){
 }
 
 var system = new System();
+// system.pipes['hello'] = new Pipe('hello')
 
 

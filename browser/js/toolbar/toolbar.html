@@ -1,4 +1,6 @@
 
+
+
 <select ng-model="mode" ng-options="m for m in modes"></select>
 
 <div>
@@ -12,10 +14,15 @@
       <label for="temp">System Temperature (deg C)</label>
       <input id="temp" type="text" ng-model="temp" name="temp">
 </div>
+lkjalsdf
+<div ng-repeat='(k,v) in pipes'>
+
+  {{v}}
+</div>
 
 <div ng-show="mode == 'edit'">
     <label for="eq">Equipment to Edit</label>
-    <select name="eq" ng-model="source" ng-options="eq.name for eq in equipment"></select>
+    <select name="eq" id="selectEqToEdit" ng-model="source" ng-options="eq.name for eq in equipment"></select>
 
     <div ng-show="source.type == 'pipe'">
         <label for="name">Name</label>
