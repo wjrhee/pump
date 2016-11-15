@@ -92,6 +92,7 @@ app.directive('toolbar', function($rootScope){
 
             // set the initial value of mode - 'create'
             $scope.mode = $scope.modes[0];
+            $scope.type = $scope.items[0];
 
             // put all the equipment on the scope for the drop down menu
             $scope.equipment = [];

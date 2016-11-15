@@ -1,6 +1,4 @@
 
-
-
 <select ng-model="mode" ng-options="m for m in modes"></select>
 
 <div>
@@ -17,86 +15,86 @@
 
 <div ng-show="mode == 'edit'">
     <label for="eq">Equipment to Edit</label>
-    <select name="eq" ng-model="source" ng-options="eq.name for eq in equipment"></select>
+    <select name="eq" ng-model="eqEdit" ng-options="eq.name for eq in equipment"></select>
 
-    <div ng-show="source.type == 'pipe'">
+    <div ng-show="eqEdit.type == 'pipe'">
         <label for="name">Name</label>
-        <p name="name">{{source.name}}</p>
-        <!-- <input type="text" ng-model="source.name" name="name"> -->
+        <p name="name">{{eqEdit.name}}</p>
+        <!-- <input type="text" ng-model="eqEdit.name" name="name"> -->
 
         <label for="matl">Material</label>
-        <input type="text" ng-model="source.matl" name="matl">
+        <input type="text" ng-model="eqEdit.matl" name="matl">
 
         <label for="length">Length (m)</label>
-        <input type="text" ng-model="source.length" name="length">
+        <input type="text" ng-model="eqEdit.length" name="length">
 
         <label for="nps">Nominal Size (mm)</label>
-        <select ng-model="source.nps" ng-options="n for n in nps"></select>
-        <!-- <input type="text" ng-model="source.nps" name="nps"> -->
+        <select ng-model="eqEdit.nps" ng-options="n for n in nps"></select>
+        <!-- <input type="text" ng-model="eqEdit.nps" name="nps"> -->
 
         <label for="sch">Schedule</label>
-        <select ng-model="source.sch" ng-options="s for s in sch"></select>
-        <!-- <input type="text" ng-model="source.sch" name="sch"> -->
+        <select ng-model="eqEdit.sch" ng-options="s for s in sch"></select>
+        <!-- <input type="text" ng-model="eqEdit.sch" name="sch"> -->
 
         <label for="roughness">Roughness (m)</label>
-        <input type="text" ng-model="source.roughness" name="roughness">
+        <input type="text" ng-model="eqEdit.roughness" name="roughness">
 
         <label for="flow">Flow (cu.m / hr)</label>
-        <input type="text" ng-model="source.flow" name="flow">
+        <input type="text" ng-model="eqEdit.flow" name="flow">
 
         <label for="start">Start</label>
-        <p type="text" name="start">{{source.source}}</p>
+        <p type="text" name="start">{{eqEdit.source}}</p>
 
         <label for="end">End</label>
-        <p type="text" name="end">{{source.target}}</p>
+        <p type="text" name="end">{{eqEdit.target}}</p>
 
         <button ng-click="editpipe()">edit</button>
 
     </div>
 
-    <div ng-show="source.type== 'vessel'">
+    <div ng-show="eqEdit.type== 'vessel'">
         <form>
         <label for="name">Name</label>
-        <p name="name">{{source.name}}</p>
+        <p name="name">{{eqEdit.name}}</p>
         <!-- <input type="text" ng-model="source.name" name="name"> -->
 
         <label for="min_P">Minimum Pressure (kPa(a))</label>
-        <input type="text" ng-model="source.P.min" name="min_P">
+        <input type="text" ng-model="eqEdit.P.min" name="min_P">
 
         <label for="max_P">Maximum Pressure (kPa(a))</label>
-        <input type="text" ng-model="source.P.max" name="max_P">
+        <input type="text" ng-model="eqEdit.P.max" name="max_P">
 
         <label for="op_P">Operating Pressure (kPa(a))</label>
-        <input type="text" ng-model="source.P.op" name="op_P">
+        <input type="text" ng-model="eqEdit.P.op" name="op_P">
 
         <label for="min_L">Minimum Level (m)</label>
-        <input type="text" ng-model="source.L.min" name="min_L">
+        <input type="text" ng-model="eqEdit.L.min" name="min_L">
 
         <label for="max_L">Maximum Level (m)</label>
-        <input type="text" ng-model="source.L.max" name="max_L">
+        <input type="text" ng-model="eqEdit.L.max" name="max_L">
 
         <label for="op_L">Operating Level (m)</label>
-        <input type="text" ng-model="source.L.op" name="op_L">
+        <input type="text" ng-model="eqEdit.L.op" name="op_L">
 
         <label for="sg">Specific Gravity</label>
-        <input type="text" ng-model="source.sg" name="sg">
+        <input type="text" ng-model="eqEdit.sg" name="sg">
         <!-- <label for="composition">Composition</label>
-        <input type="text" ng-model="source.composition" name="composition"> -->
+        <input type="text" ng-model="eqEdit.composition" name="composition"> -->
         <button ng-click="editvessel()">edit</button>
         </form>
     </div>
 
-    <div ng-show="source.type == 'pump'">
+    <div ng-show="eqEdit.type == 'pump'">
       <form>
         <label for="name">Name</label>
-        <p name="name">{{source.name}}</p>
-        <input type="text" ng-model="source.name" name="name">
+        <p name="name">{{eqEdit.name}}</p>
+        <input type="text" ng-model="eqEdit.name" name="name">
         <label for="flow">Flow (cu.m / hr)</label>
-        <input type="text" ng-model="source.flow" name="flow">
+        <input type="text" ng-model="eqEdit.flow" name="flow">
         <label for="viscosity">Viscosity (Pa-s)</label>
-        <input type="text" ng-model="source.viscosity" name="viscosity">
+        <input type="text" ng-model="eqEdit.viscosity" name="viscosity">
         <label for="elevation">Elevation (m)</label>
-        <input type="text" ng-model="source.elevation" name="elevation">
+        <input type="text" ng-model="eqEdit.elevation" name="elevation">
         <button ng-click="editpump()">edit</button>
       </form>
     </div>
@@ -104,8 +102,8 @@
 
 
 <div ng-show="mode == 'create'">
-    <label for="eqcreate">Create Equipment</label>
-    <select name="eqcreate" ng-model="type" ng-options="item for item in items"></select>
+    <label for="eqCreate">Create Equipment</label>
+    <select name="eqCreate" ng-model="type" ng-options="item for item in items"></select>
 
     <div id="vessel-form" ng-show="type =='Vessel'">
       <form>
