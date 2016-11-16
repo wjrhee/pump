@@ -82,6 +82,9 @@ app.directive('toolbar', function($rootScope){
             $('#temp').on("change", function(){
                 system.temp = +$('#temp').val();
             })
+            $('#elevationAtGrade').on("change", function(){
+                system.elevationAtGrade = +$('#elevationAtGrade').val();
+            })
 
             // set where the connection points on the blocks will be
             var connectionPoints = ['TopCenter', 'RightMiddle', 'BottomCenter', 'LeftMiddle'];
@@ -114,6 +117,7 @@ app.directive('toolbar', function($rootScope){
 
 
             $scope.create = function(eqType){
+
                 switch (eqType){
                   case 'Vessel':
 

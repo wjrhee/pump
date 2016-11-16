@@ -18,6 +18,8 @@ class System{
     // this.discharge = [];
     // ---------------
 
+    this.elevationAtGrade = 0; // in meters
+
     this.atmosP = 101;
     this.sf = 1;
     this.pump = null;
@@ -39,7 +41,6 @@ System.prototype.check = function(){
   // check if the pump is connected on both ends.
   // if the pump is connected on both ends, we know the pipes have both a target and source so the system must be complete.
 
-
   for(var key in this.equipment){
     if(this.equipment[key] instanceof Pump){
       if(this.equipment[key].connectionTo.length === 0 || this.equipment[key].connectionFrom.length === 0){
@@ -58,17 +59,21 @@ System.prototype.check = function(){
 
 System.prototype.calculate = function(){
   // check to see if the system can be calculated
+  this.findHeads();
   this.heads.forEach(head => {
+    head.calcHs();
+
     // flow through
 
   })
 }
 
 
-System.prototype.findHeads = function(temp, atmosP){
+System.prototype.findHeads = function(){
   // find all the starting points for the calculation
   for(var key in this.equipment){
-    if(this.equipment[key].connectedFrom.length === 0){
+    // console.log(this.equipment[key]);
+    if(this.equipment[key].connectionFrom.length === 0){
       this.heads.push(this.equipment[key]);
     }
   }
@@ -113,9 +118,9 @@ class Profile{
 
 // pass in specific gravity, in cases where the specific gravity of target vessel is different from the specific gravity of the source pump?  but need to know flow direction as well.
 
-Profile.prototype.calcHs = function(vessel, elevation){
+Profile.prototype.calcHs = function(vessel, elAtGrade){
   for(var key in this.hs){
-    this.hs[key] = vessel.L[key] - elevation;
+    this.hs[key] = vessel.L[key] - elAtGrade;
   }
   return this.hs;
 }
@@ -159,7 +164,7 @@ class Vessel extends Equipment{
   constructor(data){
     super(data.name);
     // this.connected = false;
-    this.name = data.name;
+    // this.name = data.name;
 
     this.type = 'vessel';
     // it might not seem to make sense to create the 'type' property but it makes it easier for determining the type for ng-show logic
@@ -191,7 +196,7 @@ class Pump extends Equipment{
     super(name);
     // this.viscosity = viscosity;
     this.elevation = 1;
-    this.name = name;
+    // this.name = name;
     this.type = 'pump';
     // this.connections = [];
     this.tdh = null;
@@ -217,8 +222,8 @@ class Pipe{
     this.source = null;
     this.target = null;
     this.innerDiameter = null;
-    // this.connectionTo = [];
-    // this.connectionFrom = [];
+    this.connectionTo = [];
+    this.connectionFrom = [];
   }
 }
 
