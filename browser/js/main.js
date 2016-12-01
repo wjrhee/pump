@@ -12,12 +12,6 @@ class System{
     this.pipes = {};
     this.heads = [];
 
-    // is this needed?
-    // ---------------
-    // this.suction = [];
-    // this.discharge = [];
-    // ---------------
-
     this.elevationAtGrade = 0; // in meters
 
     this.atmosP = 101;
@@ -62,6 +56,7 @@ System.prototype.calculate = function(){
   this.findHeads();
   this.heads.forEach(head => {
     head.calcHs();
+    head.calcHp();
 
     // flow through
 
