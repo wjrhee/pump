@@ -77,7 +77,12 @@ System.prototype.calculate = function(npsTable){
         item.profile.calcVelocity(item.flow_sf, item.innerDiameter);
         console.log(item);
         item.profile.calcHfPipe(item, item.sg);
-
+      }
+      else if(item instanceof Vessel){
+        // TODO: case for vessel
+      }
+      else if(item instanceof Pump){
+        // TODO: case for pump
       }
 
     }
