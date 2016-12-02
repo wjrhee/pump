@@ -75,6 +75,9 @@ System.prototype.calculate = function(npsTable){
         item.calcInnerDiameter(npsTable);
         item.setFlow();
         item.profile.calcVelocity(item.flow_sf, item.innerDiameter);
+        console.log(item);
+        item.profile.calcHfPipe(item, item.sg);
+
       }
 
     }
@@ -130,7 +133,7 @@ class Profile{
   }
 }
 
-// pass in specific gravity, in cases where the specific gravity of target vessel is different from the specific gravity of the source pump?  but need to know flow direction as well.
+// pass in specific gravity, in cases where the specific gravity of target vessel is different from the specific gravity of the source pump?
 
 Profile.prototype.calcHs = function(vessel, elAtGrade){
   for(var key in this.hs){
@@ -250,6 +253,7 @@ class Pipe{
     this.innerDiameter = null;
     this.connectionTo = [];
     this.connectionFrom = [];
+    this.sg = null;
   }
 }
 
