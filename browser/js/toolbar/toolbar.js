@@ -111,7 +111,8 @@ app.directive('toolbar', function($rootScope){
                 if(!system.check()){
                     return;
                 }
-                system.calculate() // pass in the temp and atmosP
+
+                system.calculate($scope.$parent.nps) // pass in the temp and atmosP
 
             }
 

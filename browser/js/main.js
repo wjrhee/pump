@@ -52,7 +52,7 @@ System.prototype.check = function(){
 
 
 
-System.prototype.calculate = function(){
+System.prototype.calculate = function(npsTable){
   // check to see if the system can be calculated
   this.findHeads();
   this.heads.forEach(head => {
@@ -61,10 +61,23 @@ System.prototype.calculate = function(){
     // console.log(head, this.elevationAtGrade);
     head.calcHs(head, this.elevationAtGrade);
     head.calcHp(head);
+    var queue = []
+    head.connectionTo.forEach(connection => {
+      queue.push(connection);
+    })
 
-    // head.calcHp();
+    while(queue.length > 0){
+      var item = queue.pop();
+      if(!item.profile){
+          item.profile = new Profile();
+        }
+      if(item instanceof Pipe){
+        item.calcInnerDiameter(npsTable);
+        item.setFlow();
+        item.profile.calcVelocity(item.flow_sf, item.innerDiameter);
+      }
 
-    // flow through
+    }
 
   })
 }
