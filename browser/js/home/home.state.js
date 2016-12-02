@@ -20,11 +20,11 @@ app.config(function($stateProvider) {
                 var npsTable = {};
 
                 return npsDataPromise.then(npsData => {
-                    console.log(npsData);
+                    // console.log(npsData);
                     npsData.forEach(item => {
                         npsTable[item.NPS] = item;
                     })
-                    console.log(npsTable);
+                    // console.log(npsTable);
                     return npsTable;
                 })
             },
@@ -53,7 +53,7 @@ app.config(function($stateProvider) {
         controller: function($scope, nps, fittings){
             $scope.nps = nps;
             $scope.fittings = fittings;
-            console.log($scope);
+            // console.log($scope);
         }
     });
 });

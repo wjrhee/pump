@@ -139,7 +139,7 @@ app.directive('toolbar', function($rootScope){
 
                   // find the worst case scenario for each discharge off of the upstream pump, and calculate the TDH.  the downstream pump's TDH will be the pressure differential between the suction side, which is coming from the first pump to the worst case scenario.
 
-                    var newPump = new Pump($scope.pump.flow, $scope.pump.name);
+                    var newPump = new Pump($scope.pump);
                     $scope.equipment.push(newPump);
                     system.equipment[$scope.pump.name] = newPump;
 

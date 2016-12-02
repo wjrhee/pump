@@ -18,6 +18,7 @@ class System{
     this.sf = 1;
     this.pump = null;
     this.temp = 0;
+    // this.viscosity = 0.00089;
   }
 }
 
@@ -55,8 +56,13 @@ System.prototype.calculate = function(){
   // check to see if the system can be calculated
   this.findHeads();
   this.heads.forEach(head => {
-    head.calcHs();
-    head.calcHp();
+
+    // console.log(head instanceof Vessel);
+    // console.log(head, this.elevationAtGrade);
+    head.calcHs(head, this.elevationAtGrade);
+    head.calcHp(head);
+
+    // head.calcHp();
 
     // flow through
 
@@ -140,6 +146,8 @@ Profile.prototype.calcHfPipe = function(pipe, sg){
   return this.hfPipe;
 }
 
+
+// TODO: MOVE THIS INTO calcHfPipe
 Profile.prototype.calcVelocity = function(flow, diameter){
   this.velocity = flow / (Math.pow(diameter, 2) * (Math.PI / 4)) / 3600;
   return this.velocity;
@@ -179,6 +187,7 @@ class Vessel extends Equipment{
       max: data.max_L,
       op: data.op_L
     }
+    this.viscosity = data.viscosity ? data.viscosity : 0.00089;
     this.sg = data.sg;
     // this.composition = data.composition;
     // this.svg = data.svg;
@@ -187,20 +196,29 @@ class Vessel extends Equipment{
 }
 
 class Pump extends Equipment{
-  constructor(flow, name){
-    super(name);
+  constructor(data){
+    super(data.name);
     // this.viscosity = viscosity;
-    this.elevation = 1;
+    this.elevation = data.elevation ? data.elevation : 1;
     // this.name = name;
     this.type = 'pump';
     // this.connections = [];
-    this.tdh = null;
-    this.suction_P = null;
-    this.discharge_P = null;
+    this.tdh = [];
+    this.suction_P = [];
+    this.discharge_P = [];
     this.npsha = null;
-    this.flow = flow;
+    this.flow = data.flow;
   }
 }
+
+Pump.prototype.calcTDH = function(){
+
+
+}
+Pump.prototype.calcNPSHa = function(){
+
+}
+
 
 class Pipe{
   constructor(name){

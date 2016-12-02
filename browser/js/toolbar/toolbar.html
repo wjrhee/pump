@@ -51,7 +51,7 @@
         <label for="end">End</label>
         <p type="text" name="end">{{eqEdit.target}}</p>
 
-        <button ng-click="editpipe()">edit</button>
+        <button ng-click="editpipe()">save</button>
 
     </div>
 
@@ -81,9 +81,10 @@
 
         <label for="sg">Specific Gravity</label>
         <input type="text" ng-model="eqEdit.sg" name="sg">
+
         <!-- <label for="composition">Composition</label>
         <input type="text" ng-model="eqEdit.composition" name="composition"> -->
-        <button ng-click="editvessel()">edit</button>
+        <button ng-click="editvessel()">save</button>
         </form>
     </div>
 
@@ -94,11 +95,9 @@
         <input type="text" ng-model="eqEdit.name" name="name">
         <label for="flow">Flow (cu.m / hr)</label>
         <input type="text" ng-model="eqEdit.flow" name="flow">
-        <label for="viscosity">Viscosity (Pa-s)</label>
-        <input type="text" ng-model="eqEdit.viscosity" name="viscosity">
         <label for="elevation">Elevation (m)</label>
         <input type="text" ng-model="eqEdit.elevation" name="elevation">
-        <button ng-click="editpump()">edit</button>
+        <button ng-click="editpump()">save</button>
       </form>
     </div>
 </div>
@@ -127,6 +126,8 @@
         <input type="text" ng-model="vessel.op_L" name="op_L">
         <label for="sg">Specific Gravity</label>
         <input type="text" ng-model="vessel.sg" name="sg">
+        <label for="viscosity">Viscosity (Pa-s)</label>
+        <input type="text" ng-model="vessel.viscosity" name="viscosity">
         <!-- <label for="composition">Composition</label>
         <input type="text" ng-model="vessel.composition" name="composition"> -->
       </form>
@@ -134,10 +135,13 @@
 
     <div id="pump-form" ng-show="type =='Pump'">
       <form>
+      <!-- Name and Flow must be filled -->
         <label for="name">Name</label>
         <input type="text" ng-model="pump.name" name="name">
         <label for="flow">Flow (cu.m / hr)</label>
         <input type="text" ng-model="pump.flow" name="flow">
+        <label for="elevation">Elevation (m)</label>
+        <input type="text" ng-model="pump.elevation" name="elevation">
 
       </form>
 
