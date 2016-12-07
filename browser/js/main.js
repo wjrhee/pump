@@ -5,6 +5,8 @@
 // multiple pumps linked is ok.
 // Every pipe needs to have a source and target.  Cannot go to nowhere.
 
+// MUST HAVE A PUMP
+
 class System{
   constructor(){
     // default system values
@@ -16,7 +18,7 @@ class System{
 
     this.atmosP = 101;
     this.sf = 1;
-    this.pump = null;
+    this.pump = [];
     this.temp = 0;
     // this.viscosity = 0.00089;
   }
@@ -54,6 +56,8 @@ System.prototype.check = function(){
 
 System.prototype.calculate = function(npsTable){
   // check to see if the system can be calculated
+  // start at the pumps and work in both direction? middle out?
+
   this.findHeads();
   this.heads.forEach(head => {
 
@@ -79,14 +83,20 @@ System.prototype.calculate = function(npsTable){
         item.profile.calcHfPipe(item, item.sg);
       }
       else if(item instanceof Vessel){
+        item.profile.calcHs(head, this.elevationAtGrade);
+        item.profile.calcHp(head);
         // TODO: case for vessel
       }
       else if(item instanceof Pump){
+
         // TODO: case for pump
       }
-
+      if(item.connectionTo.length > 0){
+        item.connectionTo.forEach(connection => {
+          queue.push(connection);
+        })
+      }
     }
-
   })
 }
 
@@ -232,11 +242,22 @@ class Pump extends Equipment{
   }
 }
 
+Pump.prototype.calcSuctionP = function(){
+  // TODO
+
+}
+Pump.prototype.calcDischargeP = function(){
+  // TODO
+
+}
+
 Pump.prototype.calcTDH = function(){
+  // TODO
 
 
 }
 Pump.prototype.calcNPSHa = function(){
+  // TODO
 
 }
 
