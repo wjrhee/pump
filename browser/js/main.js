@@ -58,27 +58,32 @@ System.prototype.check = function(){
 System.prototype.calculate = function(npsTable){
   // check to see if the system can be calculated
   // start at the pumps and work in both direction? middle out?
-  var traverseBackPath = function(item){
+  var traverseBackPath = function(item, pump, val){
+
     if(item.connectionFrom.length > 0){
       item.connectionFrom.forEach(conn => {
-        traverseBackPath(conn);
+        traverseBackPath(conn, pump, val + conn.profile.val);
       })
     }
+    else{
+      pump.push(val);
+
+    }
   }
-  var traverseForwardPath = function(item){
+  var traverseForwardPath = function(item, pump, val){
     if(item.connectionTo.length > 0){
       item.connectionTo.forEach(conn => {
-        traverseForwardPath(conn);
+        traverseForwardPath(conn, pump, val + conn.profile.val);
       })
     }
   }
   this.pumps.forEach(pump => {
     // flow through each path to and from
     pump.connectionFrom.forEach(conn => {
-      traverseBackPath(conn);
+      traverseBackPath(conn, pump, conn.profile.hs);
     })
     pump.connectionTo.forEach(conn => {
-      traverseForwardPath(conn);
+      traverseForwardPath(conn, pump, conn.profile.hs);
     })
   })
 
