@@ -18,7 +18,7 @@ class System{
 
     this.atmosP = 101;
     this.sf = 1;
-    this.pump = [];
+    this.pumps = [];
     this.temp = 0;
     // this.viscosity = 0.00089;
   }
@@ -37,26 +37,54 @@ System.prototype.check = function(){
 
   // check if the pump is connected on both ends.
   // if the pump is connected on both ends, we know the pipes have both a target and source so the system must be complete.
+  var isThereAPump = false;
 
   for(var key in this.equipment){
     if(this.equipment[key] instanceof Pump){
       if(this.equipment[key].connectionTo.length === 0 || this.equipment[key].connectionFrom.length === 0){
         return false;
       }
+      isThereAPump = true;
+      this.pumps.push(this.equipment[key]);
     }
-    // else if(this.equipment[key] instanceof Vessel){
-    //   // have checks for vessels
-    // }
   }
-  return true;
-
+  if(isThereAPump){
+    return true;
+  }
+  else{
+    return false;
+  }
 }
-
 
 
 System.prototype.calculate = function(npsTable){
   // check to see if the system can be calculated
   // start at the pumps and work in both direction? middle out?
+  var traverseBackPath = function(item){
+    if(item.connectionFrom.length > 0){
+      item.connectionFrom.forEach(conn => {
+        traverseBackPath(conn);
+      })
+    }
+  }
+  var traverseForwardPath = function(item){
+    if(item.connectionTo.length > 0){
+      item.connectionTo.forEach(conn => {
+        traverseForwardPath(conn);
+      })
+    }
+  }
+  this.pumps.forEach(pump => {
+    // flow through each path to and from
+    pump.connectionFrom.forEach(conn => {
+      traverseBackPath(conn);
+    })
+    pump.connectionTo.forEach(conn => {
+      traverseForwardPath(conn);
+    })
+  })
+
+
 
   this.findHeads();
   this.heads.forEach(head => {
@@ -242,16 +270,12 @@ class Pump extends Equipment{
   }
 }
 
-Pump.prototype.calcSuctionP = function(){
-  // TODO
-
-}
-Pump.prototype.calcDischargeP = function(){
-  // TODO
-
-}
-
 Pump.prototype.calcTDH = function(){
+  this.suction_P.forEach(hs => {
+    this.discharge_P.forEach(hd => {
+      this.tdh.push(hd - hs);
+    })
+  })
   // TODO
 
 
