@@ -13,9 +13,7 @@ class System{
     this.equipment = {};
     this.pipes = {};
     this.heads = [];
-
     this.elevationAtGrade = 0; // in meters
-
     this.atmosP = 101;
     this.sf = 1;
     this.pumps = [];
@@ -34,9 +32,9 @@ System.prototype.check = function(){
       return false;
     }
   }
-
   // check if the pump is connected on both ends.
   // if the pump is connected on both ends, we know the pipes have both a target and source so the system must be complete.
+  // check if pumps even exist and push all pumps into the system array
   var isThereAPump = false;
 
   for(var key in this.equipment){
@@ -276,9 +274,6 @@ Pump.prototype.calcTDH = function(){
       this.tdh.push(hd - hs);
     })
   })
-  // TODO
-
-
 }
 Pump.prototype.calcNPSHa = function(){
   // TODO
