@@ -6,6 +6,7 @@
 // Every pipe needs to have a source and target.  Cannot go to nowhere.
 
 // MUST HAVE A PUMP
+var options = ['min', 'op', 'max'];
 
 class System{
   constructor(){
@@ -58,32 +59,60 @@ System.prototype.check = function(){
 System.prototype.calculate = function(npsTable){
   // check to see if the system can be calculated
   // start at the pumps and work in both direction? middle out?
-  var traverseBackPath = function(item, pump, val){
+  var traverseBackPath = function(item, pump, hsTotal, hpTotal, hfTotal){
 
     if(item.connectionFrom.length > 0){
       item.connectionFrom.forEach(conn => {
-        traverseBackPath(conn, pump, val + conn.profile.val);
+
+        options.forEach(option => {
+          hsTotal[option] += conn.profile.hs[option];
+          hpTotal[option] += conn.profile.hp[option];
+
+        })
+        hfTotal += conn.profile.hf;
+        traverseBackPath(conn, pump, hsTotal, hpTotal, hfTotal);
+        // traverseBackPath(conn, pump, val + conn.profile.val);
       })
     }
     else{
-      pump.push(val);
+      for(var hsKey in hsTotal){
+        for(var hpKey in hpTotal){
+          pump.suction_P.push(hsTotal[hsKey] + hpTotal[hpKey] + hfTotal);
+        }
+      }
 
     }
   }
-  var traverseForwardPath = function(item, pump, val){
+  var traverseForwardPath = function(item, pump, hsTotal, hpTotal, hfTotal){
     if(item.connectionTo.length > 0){
       item.connectionTo.forEach(conn => {
-        traverseForwardPath(conn, pump, val + conn.profile.val);
+
+        options.forEach(option => {
+          hsTotal[option] += conn.profile.hs[option];
+          hpTotal[option] += conn.profile.hp[option];
+
+        })
+        hfTotal += conn.profile.hf;
+        traverseBackPath(conn, pump, hsTotal, hpTotal, hfTotal);
+        // traverseBackPath(conn, pump, val + conn.profile.val);
       })
+    }
+    else{
+      for(var hsKey in hsTotal){
+        for(var hpKey in hpTotal){
+          pump.discharge_P.push(hsTotal[hsKey] + hpTotal[hpKey] + hfTotal);
+        }
+      }
+
     }
   }
   this.pumps.forEach(pump => {
     // flow through each path to and from
     pump.connectionFrom.forEach(conn => {
-      traverseBackPath(conn, pump, conn.profile.hs);
+      traverseBackPath(conn, pump, conn.profile.hs, conn.profile.hp, conn.profile.hf);
     })
     pump.connectionTo.forEach(conn => {
-      traverseForwardPath(conn, pump, conn.profile.hs);
+      traverseForwardPath(conn, pump, conn.profile.hs, conn.profile.hp, conn.profile.hf);
     })
   })
 
