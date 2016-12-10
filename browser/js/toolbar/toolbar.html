@@ -4,52 +4,52 @@
 <div>
     System
       <label for="sf">Safety Factor</label>
-      <input id="sf" type="text" ng-model="sf" name="sf">
+      <input class="data-input" id="sf" type="text" ng-model="sf" name="sf">
 
       <label for="atmosP">Atmospheric Pressure (kPa(a))</label>
-      <input id="atmosP" type="text" ng-model="atmosP" name="atmosP">
+      <input class="data-input" id="atmosP" type="text" ng-model="atmosP" name="atmosP">
 
       <label for="temp">System Temperature (deg C)</label>
-      <input id="temp" type="text" ng-model="temp" name="temp">
+      <input class="data-input" id="temp" type="text" ng-model="temp" name="temp">
 
       <label for="elevationAtGrade">Elevation At Grade</label>
-      <input id="elevationAtGrade" type="text" ng-model="elevationAtGrade" name="elevationAtGrade">
+      <input class="data-input" id="elevationAtGrade" type="text" ng-model="elevationAtGrade" name="elevationAtGrade">
 </div>
 
 <div ng-show="mode == 'edit'">
     <label for="eq">Equipment to Edit</label>
-    <select name="eq" ng-model="eqEdit" ng-options="eq.name for eq in equipment"></select>
+    <select class="data-select" name="eq" ng-model="eqEdit" ng-options="eq.name for eq in equipment"></select>
 
     <div ng-show="eqEdit.type == 'pipe'">
         <label for="name">Name</label>
-        <p name="name">{{eqEdit.name}}</p>
+        <p class="data-text" name="name">{{eqEdit.name}}</p>
         <!-- <input type="text" ng-model="eqEdit.name" name="name"> -->
 
         <label for="matl">Material</label>
-        <input type="text" ng-model="eqEdit.matl" name="matl">
+        <input class="data-input" type="text" ng-model="eqEdit.matl" name="matl">
 
         <label for="length">Length (m)</label>
-        <input type="text" ng-model="eqEdit.length" name="length">
+        <input class="data-input" type="text" ng-model="eqEdit.length" name="length">
 
         <label for="nps">Nominal Size (mm)</label>
-        <select ng-model="eqEdit.nps" ng-options="n for n in nps"></select>
+        <select class="data-select" ng-model="eqEdit.nps" ng-options="n for n in nps"></select>
         <!-- <input type="text" ng-model="eqEdit.nps" name="nps"> -->
 
         <label for="sch">Schedule</label>
-        <select ng-model="eqEdit.sch" ng-options="s for s in sch"></select>
+        <select class="data-select" ng-model="eqEdit.sch" ng-options="s for s in sch"></select>
         <!-- <input type="text" ng-model="eqEdit.sch" name="sch"> -->
 
         <label for="roughness">Roughness (m)</label>
-        <input type="text" ng-model="eqEdit.roughness" name="roughness">
+        <input class="data-input" type="text" ng-model="eqEdit.roughness" name="roughness">
 
         <label for="flow">Flow (cu.m / hr)</label>
-        <input type="text" ng-model="eqEdit.flow" name="flow">
+        <input class="data-input" type="text" ng-model="eqEdit.flow" name="flow">
 
         <label for="start">Start</label>
-        <p type="text" name="start">{{eqEdit.source}}</p>
+        <p class="data-text" type="text" name="start">{{eqEdit.source}}</p>
 
         <label for="end">End</label>
-        <p type="text" name="end">{{eqEdit.target}}</p>
+        <p class="data-text" type="text" name="end">{{eqEdit.target}}</p>
 
         <button ng-click="editpipe()">save</button>
 
@@ -58,29 +58,29 @@
     <div ng-show="eqEdit.type== 'vessel'">
         <form>
         <label for="name">Name</label>
-        <p name="name">{{eqEdit.name}}</p>
+        <p class="data-text" name="name">{{eqEdit.name}}</p>
         <!-- <input type="text" ng-model="source.name" name="name"> -->
 
         <label for="min_P">Minimum Pressure (kPa(a))</label>
-        <input type="text" ng-model="eqEdit.P.min" name="min_P">
+        <input class="data-input" type="text" ng-model="eqEdit.P.min" name="min_P">
 
         <label for="max_P">Maximum Pressure (kPa(a))</label>
-        <input type="text" ng-model="eqEdit.P.max" name="max_P">
+        <input class="data-input" type="text" ng-model="eqEdit.P.max" name="max_P">
 
         <label for="op_P">Operating Pressure (kPa(a))</label>
-        <input type="text" ng-model="eqEdit.P.op" name="op_P">
+        <input class="data-input" type="text" ng-model="eqEdit.P.op" name="op_P">
 
         <label for="min_L">Minimum Level (m)</label>
-        <input type="text" ng-model="eqEdit.L.min" name="min_L">
+        <input class="data-input" type="text" ng-model="eqEdit.L.min" name="min_L">
 
         <label for="max_L">Maximum Level (m)</label>
-        <input type="text" ng-model="eqEdit.L.max" name="max_L">
+        <input class="data-input" type="text" ng-model="eqEdit.L.max" name="max_L">
 
         <label for="op_L">Operating Level (m)</label>
-        <input type="text" ng-model="eqEdit.L.op" name="op_L">
+        <input class="data-input" type="text" ng-model="eqEdit.L.op" name="op_L">
 
         <label for="sg">Specific Gravity</label>
-        <input type="text" ng-model="eqEdit.sg" name="sg">
+        <input class="data-input" type="text" ng-model="eqEdit.sg" name="sg">
 
         <!-- <label for="composition">Composition</label>
         <input type="text" ng-model="eqEdit.composition" name="composition"> -->
@@ -91,12 +91,12 @@
     <div ng-show="eqEdit.type == 'pump'">
       <form>
         <label for="name">Name</label>
-        <p name="name">{{eqEdit.name}}</p>
-        <input type="text" ng-model="eqEdit.name" name="name">
+        <p class="data-text" name="name">{{eqEdit.name}}</p>
+        <input class="data-input" type="text" ng-model="eqEdit.name" name="name">
         <label for="flow">Flow (cu.m / hr)</label>
-        <input type="text" ng-model="eqEdit.flow" name="flow">
+        <input class="data-input" type="text" ng-model="eqEdit.flow" name="flow">
         <label for="elevation">Elevation (m)</label>
-        <input type="text" ng-model="eqEdit.elevation" name="elevation">
+        <input class="data-input" type="text" ng-model="eqEdit.elevation" name="elevation">
         <button ng-click="editpump()">save</button>
       </form>
     </div>
@@ -110,26 +110,26 @@
     <div id="vessel-form" ng-show="type =='Vessel'">
       <form>
         <label for="name">Name</label>
-        <input type="text" ng-model="vessel.name" name="name">
+        <input class="data-input" type="text" ng-model="vessel.name" name="name">
         <label for="min_P">Minimum Pressure (kPa(a))</label>
-        <input type="text" ng-model="vessel.min_P" name="min_P">
+        <input class="data-input" type="text" ng-model="vessel.min_P" name="min_P">
         <label for="max_P">Maximum Pressure (kPa(a))</label>
-        <input type="text" ng-model="vessel.max_P" name="max_P">
+        <input class="data-input" type="text" ng-model="vessel.max_P" name="max_P">
         <label for="op_P">Operating Pressure (kPa(a))</label>
-        <input type="text" ng-model="vessel.op_P" name="op_P">
+        <input class="data-input" type="text" ng-model="vessel.op_P" name="op_P">
 
         <label for="min_L">Minimum Level (m)</label>
-        <input type="text" ng-model="vessel.min_L" name="min_L">
+        <input class="data-input" type="text" ng-model="vessel.min_L" name="min_L">
         <label for="max_L">Maximum Level (m)</label>
-        <input type="text" ng-model="vessel.max_L" name="max_L">
+        <input class="data-input" type="text" ng-model="vessel.max_L" name="max_L">
         <label for="op_L">Operating Level (m)</label>
-        <input type="text" ng-model="vessel.op_L" name="op_L">
+        <input class="data-input" type="text" ng-model="vessel.op_L" name="op_L">
         <label for="sg">Specific Gravity</label>
-        <input type="text" ng-model="vessel.sg" name="sg">
+        <input class="data-input" type="text" ng-model="vessel.sg" name="sg">
         <label for="viscosity">Viscosity (Pa-s)</label>
-        <input type="text" ng-model="vessel.viscosity" name="viscosity">
+        <input class="data-input" type="text" ng-model="vessel.viscosity" name="viscosity">
         <!-- <label for="composition">Composition</label>
-        <input type="text" ng-model="vessel.composition" name="composition"> -->
+        <input class="data-input" type="text" ng-model="vessel.composition" name="composition"> -->
       </form>
     </div>
 
@@ -137,11 +137,11 @@
       <form>
       <!-- Name and Flow must be filled -->
         <label for="name">Name</label>
-        <input type="text" ng-model="pump.name" name="name">
+        <input class="data-input" type="text" ng-model="pump.name" name="name">
         <label for="flow">Flow (cu.m / hr)</label>
-        <input type="text" ng-model="pump.flow" name="flow">
+        <input class="data-input" type="text" ng-model="pump.flow" name="flow">
         <label for="elevation">Elevation (m)</label>
-        <input type="text" ng-model="pump.elevation" name="elevation">
+        <input class="data-input" type="text" ng-model="pump.elevation" name="elevation">
 
       </form>
 
